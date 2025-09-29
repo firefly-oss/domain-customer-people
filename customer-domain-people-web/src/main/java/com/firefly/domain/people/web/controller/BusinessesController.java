@@ -1,5 +1,6 @@
 package com.firefly.domain.people.web.controller;
 
+import com.firefly.core.customer.sdk.model.LegalEntityDTO;
 import com.firefly.core.customer.sdk.model.PartyStatusDTO;
 import com.firefly.domain.people.core.business.commands.RegisterBusinessCommand;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
@@ -43,6 +44,13 @@ public class BusinessesController {
             @Valid @RequestBody UpdateBusinessCommand command) {
         return businessService.updateBusiness(command)
                 .thenReturn(ResponseEntity.ok().build());
+    }
+
+    @Operation(summary = "Get business info", description = "Retrieve business information by business ID.")
+    @GetMapping("/{businessId}")
+    public Mono<ResponseEntity<LegalEntityDTO>> getBusinessInfo(@PathVariable UUID businessId) {
+        return businessService.getBusinessInfo(businessId)
+                .map(ResponseEntity::ok);
     }
 
     // Address endpoints

@@ -1,5 +1,6 @@
 package com.firefly.domain.people.web.controller;
 
+import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import com.firefly.core.customer.sdk.model.PartyStatusDTO;
 import com.firefly.domain.people.core.contact.commands.*;
 import com.firefly.domain.people.core.contact.services.ContactService;
@@ -42,6 +43,13 @@ public class CustomersController {
             @Valid @RequestBody UpdateCustomerCommand command) {
         return customerService.updateCustomer(command)
                 .thenReturn(ResponseEntity.ok().build());
+    }
+
+    @Operation(summary = "Get customer info", description = "Retrieve customer information by customer ID.")
+    @GetMapping("/{customerId}")
+    public Mono<ResponseEntity<NaturalPersonDTO>> getCustomerInfo(@PathVariable UUID customerId) {
+        return customerService.getCustomerInfo(customerId)
+                .map(ResponseEntity::ok);
     }
 
     // Address endpoints

@@ -1,9 +1,12 @@
 package com.firefly.domain.people.core.business.services.impl;
 
+import com.firefly.common.domain.cqrs.query.QueryBus;
+import com.firefly.core.customer.sdk.model.LegalEntityDTO;
 import com.firefly.domain.people.core.business.commands.RegisterBusinessCommand;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
 import com.firefly.domain.people.core.business.services.BusinessService;
 import com.firefly.domain.people.core.business.workflows.UpdateBusinessSaga;
+import com.firefly.domain.people.core.customer.queries.LegalEntityQuery;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
 import com.firefly.transactional.core.SagaResult;
 import com.firefly.transactional.engine.ExpandEach;
@@ -13,14 +16,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 public class BusinessServiceImpl implements BusinessService {
 
     private final SagaEngine engine;
+    private final QueryBus queryBus;
 
     @Autowired
-    public BusinessServiceImpl(SagaEngine engine) {
+    public BusinessServiceImpl(SagaEngine engine, QueryBus queryBus) {
         this.engine = engine;
+        this.queryBus = queryBus;
     }
 
 
@@ -50,5 +57,10 @@ public class BusinessServiceImpl implements BusinessService {
                 .build();
 
         return engine.execute(UpdateBusinessSaga.class, inputs);
+    }
+
+    @Override
+    public Mono<LegalEntityDTO> getBusinessInfo(UUID businessId) {
+        return queryBus.query(LegalEntityQuery.builder().partyId(businessId).build());
     }
 }

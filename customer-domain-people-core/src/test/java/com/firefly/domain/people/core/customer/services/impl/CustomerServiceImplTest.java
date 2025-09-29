@@ -1,5 +1,6 @@
 package com.firefly.domain.people.core.customer.services.impl;
 
+import com.firefly.common.domain.cqrs.query.QueryBus;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
@@ -29,13 +30,16 @@ class CustomerServiceImplTest {
     private SagaEngine sagaEngine;
 
     @Mock
+    private QueryBus queryBus;
+
+    @Mock
     private SagaResult sagaResult;
 
     private CustomerServiceImpl service;
 
     @BeforeEach
     void setUp() {
-        service = new CustomerServiceImpl(sagaEngine);
+        service = new CustomerServiceImpl(sagaEngine, queryBus);
     }
 
     @Test
@@ -101,7 +105,7 @@ class CustomerServiceImplTest {
     @DisplayName("Constructor should set saga engine dependency")
     void testConstructor_ShouldSetSagaEngine() {
         // When
-        CustomerServiceImpl newService = new CustomerServiceImpl(sagaEngine);
+        CustomerServiceImpl newService = new CustomerServiceImpl(sagaEngine, queryBus);
 
         // Then
         assertNotNull(newService);

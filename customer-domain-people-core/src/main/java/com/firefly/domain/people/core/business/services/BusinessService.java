@@ -1,11 +1,14 @@
 package com.firefly.domain.people.core.business.services;
 
+import com.firefly.core.customer.sdk.model.LegalEntityDTO;
 import com.firefly.domain.people.core.business.commands.RegisterBusinessCommand;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.transactional.core.SagaResult;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 public interface BusinessService {
 
@@ -32,4 +35,12 @@ public interface BusinessService {
      *         which encapsulates the outcome and details of the operation.
      */
     Mono<SagaResult> updateBusiness(UpdateBusinessCommand command);
+
+    /**
+     * Retrieves business information by business ID.
+     *
+     * @param businessId the unique identifier of the business to retrieve
+     * @return a {@code Mono} emitting the business information as a {@code LegalEntityDTO}
+     */
+    Mono<LegalEntityDTO> getBusinessInfo(UUID businessId);
 }
