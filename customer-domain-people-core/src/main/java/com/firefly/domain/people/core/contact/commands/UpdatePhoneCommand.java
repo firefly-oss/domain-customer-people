@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.contact.commands;
 
-import com.firefly.common.domain.cqrs.command.Command;
+import com.firefly.common.cqrs.command.Command;
 import com.firefly.core.customer.sdk.model.EmailContactDTO;
 import com.firefly.core.customer.sdk.model.PhoneContactDTO;
 import lombok.Data;

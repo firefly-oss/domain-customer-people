@@ -22,7 +22,7 @@ import com.firefly.domain.people.core.status.commands.RegisterPartyStatusEntryCo
 import com.firefly.domain.people.core.customer.commands.RegisterNaturalPersonCommand;
 import com.firefly.domain.people.core.party.commands.RegisterPartyCommand;
 
-import com.firefly.common.domain.cqrs.command.CommandBus;
+import com.firefly.common.cqrs.command.CommandBus;
 import com.firefly.domain.people.core.status.commands.RemovePartyStatusEntryCommand;
 import com.firefly.transactional.annotations.Saga;
 import com.firefly.transactional.annotations.SagaStep;

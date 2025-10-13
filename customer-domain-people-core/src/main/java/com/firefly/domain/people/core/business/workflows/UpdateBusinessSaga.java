@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.business.workflows;
 
-import com.firefly.common.domain.cqrs.command.CommandBus;
+import com.firefly.common.cqrs.command.CommandBus;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
 import com.firefly.transactional.annotations.Saga;
 import com.firefly.transactional.annotations.SagaStep;

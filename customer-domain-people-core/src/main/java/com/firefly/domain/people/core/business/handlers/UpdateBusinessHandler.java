@@ -1,7 +1,7 @@
 package com.firefly.domain.people.core.business.handlers;
 
-import com.firefly.common.domain.cqrs.annotations.CommandHandlerComponent;
-import com.firefly.common.domain.cqrs.command.CommandHandler;
+import com.firefly.common.cqrs.annotations.CommandHandlerComponent;
+import com.firefly.common.cqrs.command.CommandHandler;
 import com.firefly.core.customer.sdk.api.LegalEntitiesApi;
 import com.firefly.core.customer.sdk.api.NaturalPersonsApi;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;

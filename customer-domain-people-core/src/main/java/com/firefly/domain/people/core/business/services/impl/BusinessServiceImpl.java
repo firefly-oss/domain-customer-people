@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.business.services.impl;
 
-import com.firefly.common.domain.cqrs.query.QueryBus;
+import com.firefly.common.cqrs.query.QueryBus;
 import com.firefly.core.customer.sdk.model.LegalEntityDTO;
 import com.firefly.domain.people.core.business.commands.RegisterBusinessCommand;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;

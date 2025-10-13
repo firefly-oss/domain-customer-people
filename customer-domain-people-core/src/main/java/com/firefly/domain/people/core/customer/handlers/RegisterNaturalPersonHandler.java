@@ -1,7 +1,7 @@
 package com.firefly.domain.people.core.customer.handlers;
 
-import com.firefly.common.domain.cqrs.annotations.CommandHandlerComponent;
-import com.firefly.common.domain.cqrs.command.CommandHandler;
+import com.firefly.common.cqrs.annotations.CommandHandlerComponent;
+import com.firefly.common.cqrs.command.CommandHandler;
 import com.firefly.core.customer.sdk.api.NaturalPersonsApi;
 import com.firefly.domain.people.core.customer.commands.RegisterNaturalPersonCommand;
 import reactor.core.publisher.Mono;

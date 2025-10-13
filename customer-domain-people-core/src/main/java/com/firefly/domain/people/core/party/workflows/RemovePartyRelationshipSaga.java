@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.party.workflows;
 
-import com.firefly.common.domain.cqrs.command.CommandBus;
+import com.firefly.common.cqrs.command.CommandBus;
 import com.firefly.domain.people.core.party.commands.RemovePartyRelationshipCommand;
 import com.firefly.transactional.annotations.Saga;
 import com.firefly.transactional.annotations.SagaStep;

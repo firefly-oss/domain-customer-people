@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.customer.services.impl;
 
-import com.firefly.common.domain.cqrs.query.QueryBus;
+import com.firefly.common.cqrs.query.QueryBus;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;

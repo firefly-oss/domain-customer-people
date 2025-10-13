@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.party.workflows;
 
-import com.firefly.common.domain.cqrs.command.CommandBus;
+import com.firefly.common.cqrs.command.CommandBus;
 import com.firefly.domain.people.core.business.commands.RegisterLegalEntityCommand;
 import com.firefly.domain.people.core.business.commands.RemoveLegalEntityCommand;
 import com.firefly.domain.people.core.compliance.commands.*;

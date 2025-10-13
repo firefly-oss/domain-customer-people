@@ -1,7 +1,6 @@
 package com.firefly.domain.people.core.customer.commands;
 
-import com.firefly.common.domain.cqrs.command.Command;
-import com.firefly.common.domain.cqrs.query.Query;
+import com.firefly.common.cqrs.command.Command;
 import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import lombok.Builder;
 import lombok.Data;

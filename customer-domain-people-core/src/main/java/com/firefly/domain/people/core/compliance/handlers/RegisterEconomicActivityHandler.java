@@ -1,7 +1,7 @@
 package com.firefly.domain.people.core.compliance.handlers;
 
-import com.firefly.common.domain.cqrs.annotations.CommandHandlerComponent;
-import com.firefly.common.domain.cqrs.command.CommandHandler;
+import com.firefly.common.cqrs.annotations.CommandHandlerComponent;
+import com.firefly.common.cqrs.command.CommandHandler;
 import com.firefly.core.customer.sdk.api.PartyEconomicActivitiesApi;
 import com.firefly.domain.people.core.compliance.commands.RegisterEconomicActivityLinkCommand;
 import reactor.core.publisher.Mono;
