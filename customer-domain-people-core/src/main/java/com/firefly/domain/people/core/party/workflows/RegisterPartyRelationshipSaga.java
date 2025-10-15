@@ -1,26 +1,17 @@
 package com.firefly.domain.people.core.party.workflows;
 
 import com.firefly.common.cqrs.command.CommandBus;
-import com.firefly.domain.people.core.business.commands.RegisterLegalEntityCommand;
-import com.firefly.domain.people.core.business.commands.RemoveLegalEntityCommand;
-import com.firefly.domain.people.core.compliance.commands.*;
-import com.firefly.domain.people.core.contact.commands.*;
-import com.firefly.domain.people.core.customer.commands.RegisterNaturalPersonCommand;
-import com.firefly.domain.people.core.customer.commands.RemoveNaturalPersonCommand;
-import com.firefly.domain.people.core.party.commands.*;
-import com.firefly.domain.people.core.status.commands.RegisterPartyStatusEntryCommand;
-import com.firefly.domain.people.core.status.commands.RemovePartyStatusEntryCommand;
-import com.firefly.transactional.annotations.Saga;
-import com.firefly.transactional.annotations.SagaStep;
-import com.firefly.transactional.annotations.StepEvent;
-import com.firefly.transactional.core.SagaContext;
+import com.firefly.domain.people.core.party.commands.RegisterPartyRelationshipCommand;
+import com.firefly.transactional.saga.annotations.Saga;
+import com.firefly.transactional.saga.annotations.SagaStep;
+import com.firefly.transactional.saga.annotations.StepEvent;
+import com.firefly.transactional.saga.core.SagaContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-import static com.firefly.domain.people.core.utils.constants.GlobalConstants.CTX_PARTY_ID;
 import static com.firefly.domain.people.core.utils.constants.RegisterCustomerConstants.*;
 
 

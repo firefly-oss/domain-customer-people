@@ -8,7 +8,7 @@ import com.firefly.domain.people.core.contact.commands.UpdateAddressCommand;
 import com.firefly.domain.people.core.contact.commands.UpdateEmailCommand;
 import com.firefly.domain.people.core.contact.commands.UpdatePhoneCommand;
 import com.firefly.domain.people.core.contact.commands.UpdatePreferredChannelCommand;
-import com.firefly.transactional.core.SagaResult;
+import com.firefly.transactional.saga.core.SagaResult;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

@@ -1,10 +1,8 @@
 package com.firefly.domain.people.core.party.services;
 
-import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
-import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.domain.people.core.party.commands.RegisterPartyRelationshipCommand;
 import com.firefly.domain.people.core.party.commands.UpdatePartyRelationshipCommand;
-import com.firefly.transactional.core.SagaResult;
+import com.firefly.transactional.saga.core.SagaResult;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
