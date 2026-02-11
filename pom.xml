@@ -28,9 +28,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <fireflyframework.bom.version>26.01.01</fireflyframework.bom.version>
-        <common-platform-reference-master-data.version>
+        <core-common-reference-master-data.version>
             1.0.0-SNAPSHOT
-        </common-platform-reference-master-data.version>
+        </core-common-reference-master-data.version>
     </properties>
 
     <dependencyManagement>
