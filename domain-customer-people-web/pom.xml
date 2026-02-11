@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.firefly</groupId>
-        <artifactId>customer-domain-people</artifactId>
+        <artifactId>domain-customer-people</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>customer-domain-people-web</artifactId>
+    <artifactId>domain-customer-people-web</artifactId>
 
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
@@ -21,7 +21,7 @@
         <!-- Internal modules -->
         <dependency>
             <groupId>com.firefly</groupId>
-            <artifactId>customer-domain-people-interfaces</artifactId>
+            <artifactId>domain-customer-people-interfaces</artifactId>
         </dependency>
 
         <!-- Common Libraries -->

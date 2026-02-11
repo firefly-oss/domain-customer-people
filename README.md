@@ -1,14 +1,14 @@
-# customer-domain-people
+# domain-customer-people
 
 Domain layer microservice for managing people and business entities within the Firefly platform. This service acts as the orchestration layer for customer (natural person) and business (legal entity) lifecycle operations, including registration, contact information management, party relationships, compliance data, and status transitions.
 
-Repository: [https://github.com/firefly-oss/customer-domain-people](https://github.com/firefly-oss/customer-domain-people)
+Repository: [https://github.com/firefly-oss/domain-customer-people](https://github.com/firefly-oss/domain-customer-people)
 
 ---
 
 ## Overview
 
-`customer-domain-people` provides a reactive REST API that coordinates complex, multi-step entity management workflows. It sits between upstream consumers and the `common-platform-customer-mgmt` core service, applying domain orchestration through the FireflyFramework Saga Engine and CQRS patterns.
+`domain-customer-people` provides a reactive REST API that coordinates complex, multi-step entity management workflows. It sits between upstream consumers and the `common-platform-customer-mgmt` core service, applying domain orchestration through the FireflyFramework Saga Engine and CQRS patterns.
 
 ### Key Features
 
@@ -32,11 +32,11 @@ Repository: [https://github.com/firefly-oss/customer-domain-people](https://gith
 
 | Module | Purpose |
 |--------|---------|
-| `customer-domain-people-core` | Business logic: services, commands, handlers, saga workflows, queries, and constants. Organized by subdomain (customer, business, contact, party, compliance, status). |
-| `customer-domain-people-interfaces` | Interface adapters bridging the web layer to core domain logic; depends on core. |
-| `customer-domain-people-infra` | Infrastructure: `ClientFactory` for external API clients, `CustomerMgmtProperties` configuration, validators. |
-| `customer-domain-people-web` | Deployable Spring Boot application: REST controllers, application config, actuator, and OpenAPI setup. |
-| `customer-domain-people-sdk` | Auto-generated Java client SDK from the OpenAPI spec (WebClient-based, reactive). |
+| `domain-customer-people-core` | Business logic: services, commands, handlers, saga workflows, queries, and constants. Organized by subdomain (customer, business, contact, party, compliance, status). |
+| `domain-customer-people-interfaces` | Interface adapters bridging the web layer to core domain logic; depends on core. |
+| `domain-customer-people-infra` | Infrastructure: `ClientFactory` for external API clients, `CustomerMgmtProperties` configuration, validators. |
+| `domain-customer-people-web` | Deployable Spring Boot application: REST controllers, application config, actuator, and OpenAPI setup. |
+| `domain-customer-people-sdk` | Auto-generated Java client SDK from the OpenAPI spec (WebClient-based, reactive). |
 
 ### Dependency Flow
 
@@ -106,7 +106,7 @@ Key settings from `application.yaml`:
 ```yaml
 spring:
   application:
-    name: customer-domain-people
+    name: domain-customer-people
   threads:
     virtual:
       enabled: true
@@ -162,13 +162,13 @@ mvn clean install -DskipTests
 
 ```bash
 # Run via Spring Boot Maven plugin
-mvn -pl customer-domain-people-web spring-boot:run
+mvn -pl domain-customer-people-web spring-boot:run
 
 # Run with a specific profile
-mvn -pl customer-domain-people-web spring-boot:run -Dspring-boot.run.profiles=dev
+mvn -pl domain-customer-people-web spring-boot:run -Dspring-boot.run.profiles=dev
 
 # Or run the packaged JAR
-java -jar customer-domain-people-web/target/customer-domain-people.jar
+java -jar domain-customer-people-web/target/domain-customer-people.jar
 ```
 
 ---

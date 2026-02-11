@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "customer-domain-people",
+    "title": "domain-customer-people",
     "description": "Customer Domain People Layer Application",
     "contact": {
       "name": "Firefly Software Solutions Inc",
@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://core.getfirefly.io/customer-domain-people",
+      "url": "http://core.getfirefly.io/domain-customer-people",
       "description": "Development Environment"
     },
     {

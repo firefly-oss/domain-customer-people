@@ -1,6 +1,6 @@
 spring:
   application:
-    name: customer-domain-people
+    name: domain-customer-people
     version: 1.0.0
     description: Customer Domain People Layer Application
     team:
