@@ -1,7 +1,7 @@
 package com.firefly.domain.people.core.status.services;
 
 import com.firefly.domain.people.core.status.commands.UpdateStatusCommand;
-import com.firefly.transactional.saga.core.SagaResult;
+import org.fireflyframework.transactional.saga.core.SagaResult;
 import reactor.core.publisher.Mono;
 
 public interface StatusService {

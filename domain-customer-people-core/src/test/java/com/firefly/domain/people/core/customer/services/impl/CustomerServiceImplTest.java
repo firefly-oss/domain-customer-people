@@ -1,13 +1,13 @@
 package com.firefly.domain.people.core.customer.services.impl;
 
-import com.firefly.common.cqrs.query.QueryBus;
+import org.fireflyframework.cqrs.query.QueryBus;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
 import com.firefly.domain.people.core.customer.workflows.UpdateCustomerSaga;
-import com.firefly.transactional.saga.core.SagaResult;
-import com.firefly.transactional.saga.engine.SagaEngine;
-import com.firefly.transactional.saga.engine.StepInputs;
+import org.fireflyframework.transactional.saga.core.SagaResult;
+import org.fireflyframework.transactional.saga.engine.SagaEngine;
+import org.fireflyframework.transactional.saga.engine.StepInputs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

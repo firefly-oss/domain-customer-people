@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.customer.queries;
 
-import com.firefly.common.cqrs.query.Query;
+import org.fireflyframework.cqrs.query.Query;
 import com.firefly.core.customer.sdk.model.LegalEntityDTO;
 import lombok.Builder;
 import lombok.Data;

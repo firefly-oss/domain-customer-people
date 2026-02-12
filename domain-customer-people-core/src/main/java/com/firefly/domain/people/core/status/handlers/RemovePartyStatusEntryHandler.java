@@ -1,10 +1,12 @@
 package com.firefly.domain.people.core.status.handlers;
 
-import com.firefly.common.cqrs.annotations.CommandHandlerComponent;
-import com.firefly.common.cqrs.command.CommandHandler;
+import org.fireflyframework.cqrs.annotations.CommandHandlerComponent;
+import org.fireflyframework.cqrs.command.CommandHandler;
 import com.firefly.core.customer.sdk.api.PartyStatusesApi;
 import com.firefly.domain.people.core.status.commands.RemovePartyStatusEntryCommand;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @CommandHandlerComponent
 public class RemovePartyStatusEntryHandler extends CommandHandler<RemovePartyStatusEntryCommand, Void> {
@@ -17,6 +19,6 @@ public class RemovePartyStatusEntryHandler extends CommandHandler<RemovePartySta
 
     @Override
     protected Mono<Void> doHandle(RemovePartyStatusEntryCommand cmd) {
-        return partyStatusesApi.deletePartyStatus(cmd.partyId(), cmd.partyStatusId()).then();
+        return partyStatusesApi.deletePartyStatus(cmd.partyId(), cmd.partyStatusId(), UUID.randomUUID().toString()).then();
     }
 }

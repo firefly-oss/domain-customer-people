@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(git checkout:*)",
+      "Bash(jar tf:*)",
+      "Bash(mvn clean install:*)"
+    ]
+  }
+}

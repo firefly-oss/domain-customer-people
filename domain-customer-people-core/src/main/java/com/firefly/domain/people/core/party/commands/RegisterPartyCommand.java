@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.party.commands;
 
-import com.firefly.common.cqrs.command.Command;
+import org.fireflyframework.cqrs.command.Command;
 import com.firefly.core.customer.sdk.model.PartyDTO;
 import lombok.Builder;
 import lombok.Data;

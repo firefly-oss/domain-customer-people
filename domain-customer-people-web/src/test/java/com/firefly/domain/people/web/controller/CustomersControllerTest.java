@@ -7,7 +7,7 @@ import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.domain.people.core.customer.services.CustomerService;
 import com.firefly.domain.people.core.status.commands.UpdateStatusCommand;
 import com.firefly.domain.people.core.status.services.StatusService;
-import com.firefly.transactional.saga.core.SagaResult;
+import org.fireflyframework.transactional.saga.core.SagaResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

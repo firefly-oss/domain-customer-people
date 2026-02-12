@@ -3,7 +3,7 @@ package com.firefly.domain.people.core.customer.services;
 import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
-import com.firefly.transactional.saga.core.SagaResult;
+import org.fireflyframework.transactional.saga.core.SagaResult;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

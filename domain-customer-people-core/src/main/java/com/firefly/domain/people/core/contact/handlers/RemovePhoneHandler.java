@@ -1,10 +1,12 @@
 package com.firefly.domain.people.core.contact.handlers;
 
-import com.firefly.common.cqrs.annotations.CommandHandlerComponent;
-import com.firefly.common.cqrs.command.CommandHandler;
+import org.fireflyframework.cqrs.annotations.CommandHandlerComponent;
+import org.fireflyframework.cqrs.command.CommandHandler;
 import com.firefly.core.customer.sdk.api.PhoneContactsApi;
 import com.firefly.domain.people.core.contact.commands.RemovePhoneCommand;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @CommandHandlerComponent
 public class RemovePhoneHandler extends CommandHandler<RemovePhoneCommand, Void> {
@@ -18,7 +20,7 @@ public class RemovePhoneHandler extends CommandHandler<RemovePhoneCommand, Void>
     @Override
     protected Mono<Void> doHandle(RemovePhoneCommand cmd) {
         return phoneContactsApi
-                .deletePhoneContact(cmd.partyId(), cmd.phoneId())
+                .deletePhoneContact(cmd.partyId(), cmd.phoneId(), UUID.randomUUID().toString())
                 .then();
     }
 }

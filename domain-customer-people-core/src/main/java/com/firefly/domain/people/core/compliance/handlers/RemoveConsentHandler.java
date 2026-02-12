@@ -1,10 +1,12 @@
 package com.firefly.domain.people.core.compliance.handlers;
 
-import com.firefly.common.cqrs.annotations.CommandHandlerComponent;
-import com.firefly.common.cqrs.command.CommandHandler;
+import org.fireflyframework.cqrs.annotations.CommandHandlerComponent;
+import org.fireflyframework.cqrs.command.CommandHandler;
 import com.firefly.core.customer.sdk.api.ConsentsApi;
 import com.firefly.domain.people.core.compliance.commands.RemoveConsentCommand;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @CommandHandlerComponent
 public class RemoveConsentHandler extends CommandHandler<RemoveConsentCommand, Void> {
@@ -18,7 +20,7 @@ public class RemoveConsentHandler extends CommandHandler<RemoveConsentCommand, V
     @Override
     protected Mono<Void> doHandle(RemoveConsentCommand cmd) {
         return consentsApi
-                .deleteConsent(cmd.partyId(), cmd.consentId())
+                .deleteConsent(cmd.partyId(), cmd.consentId(), UUID.randomUUID().toString())
                 .then();
     }
 }

@@ -3,7 +3,7 @@ package com.firefly.domain.people.core.business.services;
 import com.firefly.core.customer.sdk.model.LegalEntityDTO;
 import com.firefly.domain.people.core.business.commands.RegisterBusinessCommand;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
-import com.firefly.transactional.saga.core.SagaResult;
+import org.fireflyframework.transactional.saga.core.SagaResult;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

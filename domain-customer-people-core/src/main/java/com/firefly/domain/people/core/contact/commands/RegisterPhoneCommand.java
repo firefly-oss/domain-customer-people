@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.contact.commands;
 
-import com.firefly.common.cqrs.command.Command;
+import org.fireflyframework.cqrs.command.Command;
 import com.firefly.core.customer.sdk.model.PhoneContactDTO;
 
 import java.util.UUID;

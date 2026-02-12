@@ -1,6 +1,6 @@
 package com.firefly.domain.people.core.business.services.impl;
 
-import com.firefly.common.cqrs.query.QueryBus;
+import org.fireflyframework.cqrs.query.QueryBus;
 import com.firefly.core.customer.sdk.model.LegalEntityDTO;
 import com.firefly.domain.people.core.business.commands.RegisterBusinessCommand;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
@@ -8,10 +8,10 @@ import com.firefly.domain.people.core.business.services.BusinessService;
 import com.firefly.domain.people.core.business.workflows.UpdateBusinessSaga;
 import com.firefly.domain.people.core.customer.queries.LegalEntityQuery;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
-import com.firefly.transactional.saga.core.SagaResult;
-import com.firefly.transactional.saga.engine.ExpandEach;
-import com.firefly.transactional.saga.engine.SagaEngine;
-import com.firefly.transactional.saga.engine.StepInputs;
+import org.fireflyframework.transactional.saga.core.SagaResult;
+import org.fireflyframework.transactional.saga.engine.ExpandEach;
+import org.fireflyframework.transactional.saga.engine.SagaEngine;
+import org.fireflyframework.transactional.saga.engine.StepInputs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;

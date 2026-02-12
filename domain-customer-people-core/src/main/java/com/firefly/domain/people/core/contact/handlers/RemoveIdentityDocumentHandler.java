@@ -1,10 +1,12 @@
 package com.firefly.domain.people.core.contact.handlers;
 
-import com.firefly.common.cqrs.annotations.CommandHandlerComponent;
-import com.firefly.common.cqrs.command.CommandHandler;
+import org.fireflyframework.cqrs.annotations.CommandHandlerComponent;
+import org.fireflyframework.cqrs.command.CommandHandler;
 import com.firefly.core.customer.sdk.api.IdentityDocumentsApi;
 import com.firefly.domain.people.core.contact.commands.RemoveIdentityDocumentCommand;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @CommandHandlerComponent
 public class RemoveIdentityDocumentHandler extends CommandHandler<RemoveIdentityDocumentCommand, Void> {
@@ -18,7 +20,7 @@ public class RemoveIdentityDocumentHandler extends CommandHandler<RemoveIdentity
     @Override
     protected Mono<Void> doHandle(RemoveIdentityDocumentCommand cmd) {
         return identityDocumentsApi
-                .deleteIdentityDocument(cmd.partyId(), cmd.identityDocumentId())
+                .deleteIdentityDocument(cmd.partyId(), cmd.identityDocumentId(), UUID.randomUUID().toString())
                 .then();
     }
 }
