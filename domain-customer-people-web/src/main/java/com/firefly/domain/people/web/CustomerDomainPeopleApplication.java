@@ -1,6 +1,5 @@
 package com.firefly.domain.people.web;
 
-import org.fireflyframework.transactional.shared.annotations.EnableTransactionalEngine;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
@@ -40,7 +39,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
                 )
         }
 )
-@EnableTransactionalEngine
 public class CustomerDomainPeopleApplication {
     public static void main(String[] args) {
         SpringApplication.run(CustomerDomainPeopleApplication.class, args);

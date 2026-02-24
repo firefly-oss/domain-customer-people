@@ -5,10 +5,10 @@ import com.firefly.domain.people.core.contact.commands.UpdatePreferredChannelCom
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import org.fireflyframework.transactional.saga.annotations.Saga;
-import org.fireflyframework.transactional.saga.annotations.SagaStep;
-import org.fireflyframework.transactional.saga.annotations.StepEvent;
-import org.fireflyframework.transactional.saga.core.SagaContext;
+import org.fireflyframework.orchestration.saga.annotation.Saga;
+import org.fireflyframework.orchestration.saga.annotation.SagaStep;
+import org.fireflyframework.orchestration.saga.annotation.StepEvent;
+import org.fireflyframework.orchestration.core.context.ExecutionContext;
 
 import static com.firefly.domain.people.core.utils.constants.RegisterCustomerConstants.*;
 
@@ -33,7 +33,7 @@ public class SetPreferredChannelSaga {
 
     @SagaStep(id = STEP_UPDATE_CHANNEL)
     @StepEvent(type = EVENT_PREFERRED_CHANNEL_UPDATED)
-    public Mono<Void> updateChannel(UpdatePreferredChannelCommand cmd, SagaContext ctx) {
+    public Mono<Void> updateChannel(UpdatePreferredChannelCommand cmd, ExecutionContext ctx) {
         return commandBus.send(cmd).then();
     }
 

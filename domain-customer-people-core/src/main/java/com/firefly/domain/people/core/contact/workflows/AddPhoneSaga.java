@@ -2,10 +2,10 @@ package com.firefly.domain.people.core.contact.workflows;
 
 import org.fireflyframework.cqrs.command.CommandBus;
 import com.firefly.domain.people.core.contact.commands.RegisterPhoneCommand;
-import org.fireflyframework.transactional.saga.annotations.Saga;
-import org.fireflyframework.transactional.saga.annotations.SagaStep;
-import org.fireflyframework.transactional.saga.annotations.StepEvent;
-import org.fireflyframework.transactional.saga.core.SagaContext;
+import org.fireflyframework.orchestration.saga.annotation.Saga;
+import org.fireflyframework.orchestration.saga.annotation.SagaStep;
+import org.fireflyframework.orchestration.saga.annotation.StepEvent;
+import org.fireflyframework.orchestration.core.context.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -34,7 +34,7 @@ public class AddPhoneSaga {
 
     @SagaStep(id = STEP_REGISTER_PHONE)
     @StepEvent(type = EVENT_PHONE_REGISTERED)
-    public Mono<UUID> registerPhone(RegisterPhoneCommand cmd, SagaContext ctx) {
+    public Mono<UUID> registerPhone(RegisterPhoneCommand cmd, ExecutionContext ctx) {
         return commandBus.send(cmd);
     }
 

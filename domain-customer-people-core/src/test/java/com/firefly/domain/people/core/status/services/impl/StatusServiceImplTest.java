@@ -2,9 +2,9 @@ package com.firefly.domain.people.core.status.services.impl;
 
 import com.firefly.domain.people.core.status.commands.UpdateStatusCommand;
 import com.firefly.domain.people.core.status.workflows.UpdateStatusSaga;
-import org.fireflyframework.transactional.saga.core.SagaResult;
-import org.fireflyframework.transactional.saga.engine.SagaEngine;
-import org.fireflyframework.transactional.saga.engine.StepInputs;
+import org.fireflyframework.orchestration.saga.engine.SagaResult;
+import org.fireflyframework.orchestration.saga.engine.SagaEngine;
+import org.fireflyframework.orchestration.saga.engine.StepInputs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +41,7 @@ class StatusServiceImplTest {
     void testUpdateStatus_ShouldExecuteSaga() {
         // Given
         UpdateStatusCommand command = mock(UpdateStatusCommand.class);
-        when(sagaEngine.execute(eq(UpdateStatusSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdateStatusSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -52,7 +52,7 @@ class StatusServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(UpdateStatusSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdateStatusSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -61,7 +61,7 @@ class StatusServiceImplTest {
         // Given
         UpdateStatusCommand command = mock(UpdateStatusCommand.class);
         RuntimeException error = new RuntimeException("Saga execution failed");
-        when(sagaEngine.execute(eq(UpdateStatusSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdateStatusSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.error(error));
 
         // When
@@ -72,7 +72,7 @@ class StatusServiceImplTest {
                 .expectError(RuntimeException.class)
                 .verify();
 
-        verify(sagaEngine).execute(eq(UpdateStatusSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdateStatusSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -85,7 +85,7 @@ class StatusServiceImplTest {
         assertNotNull(newService);
         // We can't directly access the private field, but we can verify it works by calling a method
         UpdateStatusCommand command = mock(UpdateStatusCommand.class);
-        when(sagaEngine.execute(eq(UpdateStatusSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdateStatusSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         Mono<SagaResult> result = newService.updateStatus(command);

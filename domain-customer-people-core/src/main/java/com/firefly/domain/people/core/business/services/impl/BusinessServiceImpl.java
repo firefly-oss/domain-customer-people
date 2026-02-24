@@ -8,10 +8,10 @@ import com.firefly.domain.people.core.business.services.BusinessService;
 import com.firefly.domain.people.core.business.workflows.UpdateBusinessSaga;
 import com.firefly.domain.people.core.customer.queries.LegalEntityQuery;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
-import org.fireflyframework.transactional.saga.core.SagaResult;
-import org.fireflyframework.transactional.saga.engine.ExpandEach;
-import org.fireflyframework.transactional.saga.engine.SagaEngine;
-import org.fireflyframework.transactional.saga.engine.StepInputs;
+import org.fireflyframework.orchestration.saga.engine.SagaResult;
+import org.fireflyframework.orchestration.saga.engine.ExpandEach;
+import org.fireflyframework.orchestration.saga.engine.SagaEngine;
+import org.fireflyframework.orchestration.saga.engine.StepInputs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -34,29 +34,29 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public Mono<SagaResult> registerBusiness(RegisterBusinessCommand command) {
         StepInputs inputs = StepInputs.builder()
-                .forStep(RegisterCustomerSaga::registerParty, command.party())
-                .forStep(RegisterCustomerSaga::registerLegalEntity, command.legalEntity())
-                .forStep(RegisterCustomerSaga::registerStatusEntry, ExpandEach.of(command.statusHistory()))
-                .forStep(RegisterCustomerSaga::registerIdentityDocument, ExpandEach.of(command.identityDocuments()))
-                .forStep(RegisterCustomerSaga::registerAddress, ExpandEach.of(command.addresses()))
-                .forStep(RegisterCustomerSaga::registerEmail, ExpandEach.of(command.emails()))
-                .forStep(RegisterCustomerSaga::registerPhone, ExpandEach.of(command.phones()))
-                .forStep(RegisterCustomerSaga::registerEconomicActivityLink, ExpandEach.of(command.economicActivities()))
-                .forStep(RegisterCustomerSaga::registerPartyProvider, ExpandEach.of(command.providers()))
-                .forStep(RegisterCustomerSaga::registerPartyRelationship, ExpandEach.of(command.relationships()))
-                .forStep(RegisterCustomerSaga::registerPartyGroupMembership, ExpandEach.of(command.groupMemberships()))
+                .forStepId("registerParty", command.party())
+                .forStepId("registerLegalEntity", command.legalEntity())
+                .forStepId("registerStatusEntry", ExpandEach.of(command.statusHistory()))
+                .forStepId("registerIdentityDocument", ExpandEach.of(command.identityDocuments()))
+                .forStepId("registerAddress", ExpandEach.of(command.addresses()))
+                .forStepId("registerEmail", ExpandEach.of(command.emails()))
+                .forStepId("registerPhone", ExpandEach.of(command.phones()))
+                .forStepId("registerEconomicActivityLink", ExpandEach.of(command.economicActivities()))
+                .forStepId("registerPartyProvider", ExpandEach.of(command.providers()))
+                .forStepId("registerPartyRelationship", ExpandEach.of(command.relationships()))
+                .forStepId("registerPartyGroupMembership", ExpandEach.of(command.groupMemberships()))
                 .build();
 
-        return engine.execute(RegisterCustomerSaga.class, inputs);
+        return engine.execute("RegisterCustomerSaga", inputs);
     }
 
     @Override
     public Mono<SagaResult> updateBusiness(UpdateBusinessCommand command) {
         StepInputs inputs = StepInputs.builder()
-                .forStep(UpdateBusinessSaga::updateBusiness, command)
+                .forStepId("updateBusiness", command)
                 .build();
 
-        return engine.execute(UpdateBusinessSaga.class, inputs);
+        return engine.execute("UpdateBusinessSaga", inputs);
     }
 
     @Override

@@ -6,9 +6,9 @@ import com.firefly.domain.people.core.party.commands.UpdatePartyRelationshipComm
 import com.firefly.domain.people.core.party.workflows.RegisterPartyRelationshipSaga;
 import com.firefly.domain.people.core.party.workflows.UpdatePartyRelationshipSaga;
 import com.firefly.domain.people.core.party.workflows.RemovePartyRelationshipSaga;
-import org.fireflyframework.transactional.saga.core.SagaResult;
-import org.fireflyframework.transactional.saga.engine.SagaEngine;
-import org.fireflyframework.transactional.saga.engine.StepInputs;
+import org.fireflyframework.orchestration.saga.engine.SagaResult;
+import org.fireflyframework.orchestration.saga.engine.SagaEngine;
+import org.fireflyframework.orchestration.saga.engine.StepInputs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class PartyServiceImplTest {
     void testRegisterPartyRelationship_ShouldExecuteSaga() {
         // Given
         RegisterPartyRelationshipCommand command = mock(RegisterPartyRelationshipCommand.class);
-        when(sagaEngine.execute(eq(RegisterPartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RegisterPartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -58,7 +58,7 @@ class PartyServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RegisterPartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RegisterPartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -68,7 +68,7 @@ class PartyServiceImplTest {
         UUID relationId = UUID.randomUUID();
         UpdatePartyRelationshipCommand command = mock(UpdatePartyRelationshipCommand.class);
         when(command.withPartyRelationshipId(relationId)).thenReturn(command);
-        when(sagaEngine.execute(eq(UpdatePartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdatePartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -80,7 +80,7 @@ class PartyServiceImplTest {
                 .verifyComplete();
 
         verify(command).withPartyRelationshipId(relationId);
-        verify(sagaEngine).execute(eq(UpdatePartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdatePartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -88,7 +88,7 @@ class PartyServiceImplTest {
     void testRemovePartyRelationship_ShouldExecuteSaga() {
         // Given
         UUID relationId = UUID.randomUUID();
-        when(sagaEngine.execute(eq(RemovePartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RemovePartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -99,7 +99,7 @@ class PartyServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RemovePartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RemovePartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -108,7 +108,7 @@ class PartyServiceImplTest {
         // Given
         RegisterPartyRelationshipCommand command = mock(RegisterPartyRelationshipCommand.class);
         RuntimeException error = new RuntimeException("Saga execution failed");
-        when(sagaEngine.execute(eq(RegisterPartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RegisterPartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.error(error));
 
         // When
@@ -119,7 +119,7 @@ class PartyServiceImplTest {
                 .expectError(RuntimeException.class)
                 .verify();
 
-        verify(sagaEngine).execute(eq(RegisterPartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RegisterPartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -130,7 +130,7 @@ class PartyServiceImplTest {
         UpdatePartyRelationshipCommand command = mock(UpdatePartyRelationshipCommand.class);
         when(command.withPartyRelationshipId(relationId)).thenReturn(command);
         RuntimeException error = new RuntimeException("Saga execution failed");
-        when(sagaEngine.execute(eq(UpdatePartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdatePartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.error(error));
 
         // When
@@ -142,7 +142,7 @@ class PartyServiceImplTest {
                 .verify();
 
         verify(command).withPartyRelationshipId(relationId);
-        verify(sagaEngine).execute(eq(UpdatePartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdatePartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -151,7 +151,7 @@ class PartyServiceImplTest {
         // Given
         UUID relationId = UUID.randomUUID();
         RuntimeException error = new RuntimeException("Saga execution failed");
-        when(sagaEngine.execute(eq(RemovePartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RemovePartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.error(error));
 
         // When
@@ -162,7 +162,7 @@ class PartyServiceImplTest {
                 .expectError(RuntimeException.class)
                 .verify();
 
-        verify(sagaEngine).execute(eq(RemovePartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RemovePartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -175,7 +175,7 @@ class PartyServiceImplTest {
         assertNotNull(newService);
         // We can't directly access the private field, but we can verify it works by calling a method
         RegisterPartyRelationshipCommand command = mock(RegisterPartyRelationshipCommand.class);
-        when(sagaEngine.execute(eq(RegisterPartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RegisterPartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         Mono<SagaResult> result = newService.registerPartyRelationship(command);
@@ -190,7 +190,7 @@ class PartyServiceImplTest {
     void testRegisterPartyRelationship_WithNullCommand_ShouldExecuteSaga() {
         // Given
         RegisterPartyRelationshipCommand command = null;
-        when(sagaEngine.execute(eq(RegisterPartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RegisterPartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -201,7 +201,7 @@ class PartyServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RegisterPartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RegisterPartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -224,7 +224,7 @@ class PartyServiceImplTest {
         UUID relationId = null;
         UpdatePartyRelationshipCommand command = mock(UpdatePartyRelationshipCommand.class);
         when(command.withPartyRelationshipId(relationId)).thenReturn(command);
-        when(sagaEngine.execute(eq(UpdatePartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdatePartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -236,7 +236,7 @@ class PartyServiceImplTest {
                 .verifyComplete();
 
         verify(command).withPartyRelationshipId(relationId);
-        verify(sagaEngine).execute(eq(UpdatePartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdatePartyRelationshipSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -244,7 +244,7 @@ class PartyServiceImplTest {
     void testRemovePartyRelationship_WithNullRelationId_ShouldExecuteSaga() {
         // Given
         UUID relationId = null;
-        when(sagaEngine.execute(eq(RemovePartyRelationshipSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RemovePartyRelationshipSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -255,6 +255,6 @@ class PartyServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RemovePartyRelationshipSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RemovePartyRelationshipSaga"), any(StepInputs.class));
     }
 }

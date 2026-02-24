@@ -2,10 +2,10 @@ package com.firefly.domain.people.core.business.workflows;
 
 import org.fireflyframework.cqrs.command.CommandBus;
 import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
-import org.fireflyframework.transactional.saga.annotations.Saga;
-import org.fireflyframework.transactional.saga.annotations.SagaStep;
-import org.fireflyframework.transactional.saga.annotations.StepEvent;
-import org.fireflyframework.transactional.saga.core.SagaContext;
+import org.fireflyframework.orchestration.saga.annotation.Saga;
+import org.fireflyframework.orchestration.saga.annotation.SagaStep;
+import org.fireflyframework.orchestration.saga.annotation.StepEvent;
+import org.fireflyframework.orchestration.core.context.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -35,7 +35,7 @@ public class UpdateBusinessSaga {
 
     @SagaStep(id = STEP_UPDATE_BUSINESS)
     @StepEvent(type = EVENT_BUSINESS_CHANGED)
-    public Mono<UUID> updateBusiness(UpdateBusinessCommand cmd, SagaContext ctx) {
+    public Mono<UUID> updateBusiness(UpdateBusinessCommand cmd, ExecutionContext ctx) {
         return commandBus.send(cmd);
     }
 

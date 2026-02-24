@@ -2,10 +2,10 @@ package com.firefly.domain.people.core.contact.workflows;
 
 import org.fireflyframework.cqrs.command.CommandBus;
 import com.firefly.domain.people.core.contact.commands.UpdatePhoneCommand;
-import org.fireflyframework.transactional.saga.annotations.Saga;
-import org.fireflyframework.transactional.saga.annotations.SagaStep;
-import org.fireflyframework.transactional.saga.annotations.StepEvent;
-import org.fireflyframework.transactional.saga.core.SagaContext;
+import org.fireflyframework.orchestration.saga.annotation.Saga;
+import org.fireflyframework.orchestration.saga.annotation.SagaStep;
+import org.fireflyframework.orchestration.saga.annotation.StepEvent;
+import org.fireflyframework.orchestration.core.context.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -33,7 +33,7 @@ public class UpdatePhoneSaga {
 
     @SagaStep(id = STEP_UPDATE_PHONE)
     @StepEvent(type = EVENT_PHONE_UPDATED)
-    public Mono<Void> updatePhone(UpdatePhoneCommand cmd, SagaContext ctx) {
+    public Mono<Void> updatePhone(UpdatePhoneCommand cmd, ExecutionContext ctx) {
         return commandBus.send(cmd).then();
     }
 

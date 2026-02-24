@@ -7,9 +7,9 @@ import com.firefly.domain.people.core.party.services.PartyService;
 import com.firefly.domain.people.core.party.workflows.RegisterPartyRelationshipSaga;
 import com.firefly.domain.people.core.party.workflows.UpdatePartyRelationshipSaga;
 import com.firefly.domain.people.core.party.workflows.RemovePartyRelationshipSaga;
-import org.fireflyframework.transactional.saga.core.SagaResult;
-import org.fireflyframework.transactional.saga.engine.SagaEngine;
-import org.fireflyframework.transactional.saga.engine.StepInputs;
+import org.fireflyframework.orchestration.saga.engine.SagaResult;
+import org.fireflyframework.orchestration.saga.engine.SagaEngine;
+import org.fireflyframework.orchestration.saga.engine.StepInputs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -30,29 +30,29 @@ public class PartyServiceImpl implements PartyService {
     @Override
     public Mono<SagaResult> registerPartyRelationship(RegisterPartyRelationshipCommand command) {
         StepInputs inputs = StepInputs.builder()
-                .forStep(RegisterPartyRelationshipSaga::registerPartyRelationship, command)
+                .forStepId("registerPartyRelationship", command)
                 .build();
 
-        return engine.execute(RegisterPartyRelationshipSaga.class, inputs);
+        return engine.execute("RegisterPartyRelationshipSaga", inputs);
     }
 
     @Override
     public Mono<SagaResult> updatePartyRelationship(UpdatePartyRelationshipCommand command, UUID relationId) {
         StepInputs inputs = StepInputs.builder()
-                .forStep(UpdatePartyRelationshipSaga::updatePartyRelationship, command.withPartyRelationshipId(relationId))
+                .forStepId("updatePartyRelationship", command.withPartyRelationshipId(relationId))
                 .build();
 
-        return engine.execute(UpdatePartyRelationshipSaga.class, inputs);
+        return engine.execute("UpdatePartyRelationshipSaga", inputs);
     }
 
     @Override
     public Mono<SagaResult> removePartyRelationship(UUID relationId) {
         RemovePartyRelationshipCommand command = new RemovePartyRelationshipCommand(relationId);
         StepInputs inputs = StepInputs.builder()
-                .forStep(RemovePartyRelationshipSaga::removePartyRelationship, command)
+                .forStepId("removePartyRelationship", command)
                 .build();
 
-        return engine.execute(RemovePartyRelationshipSaga.class, inputs);
+        return engine.execute("RemovePartyRelationshipSaga", inputs);
     }
 
 }

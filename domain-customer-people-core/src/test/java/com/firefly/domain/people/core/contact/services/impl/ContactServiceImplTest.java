@@ -2,9 +2,9 @@ package com.firefly.domain.people.core.contact.services.impl;
 
 import com.firefly.domain.people.core.contact.commands.*;
 import com.firefly.domain.people.core.contact.workflows.*;
-import org.fireflyframework.transactional.saga.core.SagaResult;
-import org.fireflyframework.transactional.saga.engine.SagaEngine;
-import org.fireflyframework.transactional.saga.engine.StepInputs;
+import org.fireflyframework.orchestration.saga.engine.SagaResult;
+import org.fireflyframework.orchestration.saga.engine.SagaEngine;
+import org.fireflyframework.orchestration.saga.engine.StepInputs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class ContactServiceImplTest {
         UUID partyId = UUID.randomUUID();
         RegisterAddressCommand command = mock(RegisterAddressCommand.class);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(AddAddressSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("AddAddressSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -57,7 +57,7 @@ class ContactServiceImplTest {
                 .verifyComplete();
 
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(AddAddressSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("AddAddressSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -69,7 +69,7 @@ class ContactServiceImplTest {
         UpdateAddressCommand command = mock(UpdateAddressCommand.class);
         when(command.withAddressId(addressId)).thenReturn(command);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(UpdateAddressSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdateAddressSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -81,7 +81,7 @@ class ContactServiceImplTest {
 
         verify(command).withAddressId(addressId);
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(UpdateAddressSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdateAddressSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -90,7 +90,7 @@ class ContactServiceImplTest {
         // Given
         UUID partyId = UUID.randomUUID();
         UUID addressId = UUID.randomUUID();
-        when(sagaEngine.execute(eq(RemoveAddressSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RemoveAddressSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -101,7 +101,7 @@ class ContactServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RemoveAddressSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RemoveAddressSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -111,7 +111,7 @@ class ContactServiceImplTest {
         UUID partyId = UUID.randomUUID();
         RegisterEmailCommand command = mock(RegisterEmailCommand.class);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(AddEmailSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("AddEmailSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -123,7 +123,7 @@ class ContactServiceImplTest {
                 .verifyComplete();
 
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(AddEmailSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("AddEmailSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -135,7 +135,7 @@ class ContactServiceImplTest {
         UpdateEmailCommand command = mock(UpdateEmailCommand.class);
         when(command.withEmailContactId(emailId)).thenReturn(command);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(UpdateEmailSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdateEmailSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -147,7 +147,7 @@ class ContactServiceImplTest {
 
         verify(command).withEmailContactId(emailId);
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(UpdateEmailSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdateEmailSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -156,7 +156,7 @@ class ContactServiceImplTest {
         // Given
         UUID partyId = UUID.randomUUID();
         UUID emailId = UUID.randomUUID();
-        when(sagaEngine.execute(eq(RemoveEmailSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RemoveEmailSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -167,7 +167,7 @@ class ContactServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RemoveEmailSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RemoveEmailSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -177,7 +177,7 @@ class ContactServiceImplTest {
         UUID partyId = UUID.randomUUID();
         RegisterPhoneCommand command = mock(RegisterPhoneCommand.class);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(AddPhoneSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("AddPhoneSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -189,7 +189,7 @@ class ContactServiceImplTest {
                 .verifyComplete();
 
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(AddPhoneSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("AddPhoneSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -201,7 +201,7 @@ class ContactServiceImplTest {
         UpdatePhoneCommand command = mock(UpdatePhoneCommand.class);
         when(command.withPhoneContactId(phoneId)).thenReturn(command);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(UpdatePhoneSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdatePhoneSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -213,7 +213,7 @@ class ContactServiceImplTest {
 
         verify(command).withPhoneContactId(phoneId);
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(UpdatePhoneSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdatePhoneSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -222,7 +222,7 @@ class ContactServiceImplTest {
         // Given
         UUID partyId = UUID.randomUUID();
         UUID phoneId = UUID.randomUUID();
-        when(sagaEngine.execute(eq(RemovePhoneSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RemovePhoneSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -233,7 +233,7 @@ class ContactServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RemovePhoneSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RemovePhoneSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -243,7 +243,7 @@ class ContactServiceImplTest {
         UUID partyId = UUID.randomUUID();
         UpdatePreferredChannelCommand command = mock(UpdatePreferredChannelCommand.class);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(SetPreferredChannelSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("SetPreferredChannelSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -254,7 +254,7 @@ class ContactServiceImplTest {
                 .verifyComplete();
 
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(SetPreferredChannelSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("SetPreferredChannelSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -264,7 +264,7 @@ class ContactServiceImplTest {
         UUID partyId = UUID.randomUUID();
         RegisterIdentityDocumentCommand command = mock(RegisterIdentityDocumentCommand.class);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(AddIdentityDocumentSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("AddIdentityDocumentSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -276,7 +276,7 @@ class ContactServiceImplTest {
                 .verifyComplete();
 
         verify(command).withPartyId(partyId);
-        verify(sagaEngine).execute(eq(AddIdentityDocumentSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("AddIdentityDocumentSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -285,7 +285,7 @@ class ContactServiceImplTest {
         // Given
         UUID partyId = UUID.randomUUID();
         UUID identityDocumentId = UUID.randomUUID();
-        when(sagaEngine.execute(eq(RemoveIdentityDocumentSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RemoveIdentityDocumentSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -296,7 +296,7 @@ class ContactServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RemoveIdentityDocumentSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RemoveIdentityDocumentSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -307,7 +307,7 @@ class ContactServiceImplTest {
         RegisterAddressCommand command = mock(RegisterAddressCommand.class);
         when(command.withPartyId(partyId)).thenReturn(command);
         RuntimeException error = new RuntimeException("Saga execution failed");
-        when(sagaEngine.execute(eq(AddAddressSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("AddAddressSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.error(error));
 
         // When
@@ -318,7 +318,7 @@ class ContactServiceImplTest {
                 .expectError(RuntimeException.class)
                 .verify();
 
-        verify(sagaEngine).execute(eq(AddAddressSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("AddAddressSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -333,7 +333,7 @@ class ContactServiceImplTest {
         UUID partyId = UUID.randomUUID();
         RegisterAddressCommand command = mock(RegisterAddressCommand.class);
         when(command.withPartyId(partyId)).thenReturn(command);
-        when(sagaEngine.execute(eq(AddAddressSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("AddAddressSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         Mono<SagaResult> result = newService.addAddress(partyId, command);

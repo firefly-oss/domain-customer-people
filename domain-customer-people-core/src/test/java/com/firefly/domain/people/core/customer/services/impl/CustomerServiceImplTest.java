@@ -5,9 +5,9 @@ import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
 import com.firefly.domain.people.core.customer.workflows.UpdateCustomerSaga;
-import org.fireflyframework.transactional.saga.core.SagaResult;
-import org.fireflyframework.transactional.saga.engine.SagaEngine;
-import org.fireflyframework.transactional.saga.engine.StepInputs;
+import org.fireflyframework.orchestration.saga.engine.SagaResult;
+import org.fireflyframework.orchestration.saga.engine.SagaEngine;
+import org.fireflyframework.orchestration.saga.engine.StepInputs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class CustomerServiceImplTest {
     void testRegisterCustomer_ShouldExecuteSaga() {
         // Given
         RegisterCustomerCommand command = mock(RegisterCustomerCommand.class);
-        when(sagaEngine.execute(eq(RegisterCustomerSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -58,7 +58,7 @@ class CustomerServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(RegisterCustomerSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RegisterCustomerSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -66,7 +66,7 @@ class CustomerServiceImplTest {
     void testUpdateCustomer_ShouldExecuteSaga() {
         // Given
         UpdateCustomerCommand command = mock(UpdateCustomerCommand.class);
-        when(sagaEngine.execute(eq(UpdateCustomerSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("UpdateCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         // When
@@ -77,7 +77,7 @@ class CustomerServiceImplTest {
                 .expectNext(sagaResult)
                 .verifyComplete();
 
-        verify(sagaEngine).execute(eq(UpdateCustomerSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("UpdateCustomerSaga"), any(StepInputs.class));
     }
 
 
@@ -87,7 +87,7 @@ class CustomerServiceImplTest {
         // Given
         RegisterCustomerCommand command = mock(RegisterCustomerCommand.class);
         RuntimeException error = new RuntimeException("Saga execution failed");
-        when(sagaEngine.execute(eq(RegisterCustomerSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.error(error));
 
         // When
@@ -98,7 +98,7 @@ class CustomerServiceImplTest {
                 .expectError(RuntimeException.class)
                 .verify();
 
-        verify(sagaEngine).execute(eq(RegisterCustomerSaga.class), any(StepInputs.class));
+        verify(sagaEngine).execute(eq("RegisterCustomerSaga"), any(StepInputs.class));
     }
 
     @Test
@@ -111,7 +111,7 @@ class CustomerServiceImplTest {
         assertNotNull(newService);
         // We can't directly access the private field, but we can verify it works by calling a method
         RegisterCustomerCommand command = mock(RegisterCustomerCommand.class);
-        when(sagaEngine.execute(eq(RegisterCustomerSaga.class), any(StepInputs.class)))
+        when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
         Mono<SagaResult> result = newService.registerCustomer(command);

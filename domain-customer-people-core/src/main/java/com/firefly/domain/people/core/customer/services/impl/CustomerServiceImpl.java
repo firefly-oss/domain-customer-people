@@ -8,10 +8,10 @@ import com.firefly.domain.people.core.customer.queries.NaturalPersonQuery;
 import com.firefly.domain.people.core.customer.services.CustomerService;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
 import com.firefly.domain.people.core.customer.workflows.UpdateCustomerSaga;
-import org.fireflyframework.transactional.saga.core.SagaResult;
-import org.fireflyframework.transactional.saga.engine.ExpandEach;
-import org.fireflyframework.transactional.saga.engine.SagaEngine;
-import org.fireflyframework.transactional.saga.engine.StepInputs;
+import org.fireflyframework.orchestration.saga.engine.SagaResult;
+import org.fireflyframework.orchestration.saga.engine.ExpandEach;
+import org.fireflyframework.orchestration.saga.engine.SagaEngine;
+import org.fireflyframework.orchestration.saga.engine.StepInputs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -34,31 +34,31 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Mono<SagaResult> registerCustomer(RegisterCustomerCommand command) {
         StepInputs inputs = StepInputs.builder()
-                .forStep(RegisterCustomerSaga::registerParty, command.party())
-                .forStep(RegisterCustomerSaga::registerNaturalPerson, command.naturalPerson())
-                .forStep(RegisterCustomerSaga::registerStatusEntry, ExpandEach.of(command.statusHistory()))
-                .forStep(RegisterCustomerSaga::registerPep, command.pep())
-                .forStep(RegisterCustomerSaga::registerIdentityDocument, ExpandEach.of(command.identityDocuments()))
-                .forStep(RegisterCustomerSaga::registerAddress, ExpandEach.of(command.addresses()))
-                .forStep(RegisterCustomerSaga::registerEmail, ExpandEach.of(command.emails()))
-                .forStep(RegisterCustomerSaga::registerPhone, ExpandEach.of(command.phones()))
-                .forStep(RegisterCustomerSaga::registerEconomicActivityLink, ExpandEach.of(command.economicActivities()))
-                .forStep(RegisterCustomerSaga::registerConsent, ExpandEach.of(command.consents()))
-                .forStep(RegisterCustomerSaga::registerPartyProvider, ExpandEach.of(command.providers()))
-                .forStep(RegisterCustomerSaga::registerPartyRelationship, ExpandEach.of(command.relationships()))
-                .forStep(RegisterCustomerSaga::registerPartyGroupMembership, ExpandEach.of(command.groupMemberships()))
+                .forStepId("registerParty", command.party())
+                .forStepId("registerNaturalPerson", command.naturalPerson())
+                .forStepId("registerStatusEntry", ExpandEach.of(command.statusHistory()))
+                .forStepId("registerPep", command.pep())
+                .forStepId("registerIdentityDocument", ExpandEach.of(command.identityDocuments()))
+                .forStepId("registerAddress", ExpandEach.of(command.addresses()))
+                .forStepId("registerEmail", ExpandEach.of(command.emails()))
+                .forStepId("registerPhone", ExpandEach.of(command.phones()))
+                .forStepId("registerEconomicActivityLink", ExpandEach.of(command.economicActivities()))
+                .forStepId("registerConsent", ExpandEach.of(command.consents()))
+                .forStepId("registerPartyProvider", ExpandEach.of(command.providers()))
+                .forStepId("registerPartyRelationship", ExpandEach.of(command.relationships()))
+                .forStepId("registerPartyGroupMembership", ExpandEach.of(command.groupMemberships()))
                 .build();
 
-        return engine.execute(RegisterCustomerSaga.class, inputs);
+        return engine.execute("RegisterCustomerSaga", inputs);
     }
 
     @Override
     public Mono<SagaResult> updateCustomer(UpdateCustomerCommand command) {
         StepInputs inputs = StepInputs.builder()
-                .forStep(UpdateCustomerSaga::updateBusiness, command)
+                .forStepId("updateCustomer", command)
                 .build();
 
-        return engine.execute(UpdateCustomerSaga.class, inputs);
+        return engine.execute("UpdateCustomerSaga", inputs);
     }
 
     @Override
