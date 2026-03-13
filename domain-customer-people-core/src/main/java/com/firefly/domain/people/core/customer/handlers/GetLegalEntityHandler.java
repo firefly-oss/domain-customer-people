@@ -20,6 +20,6 @@ public class GetLegalEntityHandler extends QueryHandler<LegalEntityQuery, LegalE
 
     @Override
     protected Mono<LegalEntityDTO> doHandle(LegalEntityQuery cmd) {
-        return legalEntitiesApi.getLegalEntityByPartyId(cmd.getPartyId(), UUID.randomUUID().toString());
+        return legalEntitiesApi.getLegalEntityByPartyId(cmd.getPartyId());
     }
 }

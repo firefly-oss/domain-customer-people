@@ -20,7 +20,7 @@ public class RemoveConsentHandler extends CommandHandler<RemoveConsentCommand, V
     @Override
     protected Mono<Void> doHandle(RemoveConsentCommand cmd) {
         return consentsApi
-                .deleteConsent(cmd.partyId(), cmd.consentId(), UUID.randomUUID().toString())
+                .deleteConsent(cmd.partyId(), cmd.consentId())
                 .then();
     }
 }

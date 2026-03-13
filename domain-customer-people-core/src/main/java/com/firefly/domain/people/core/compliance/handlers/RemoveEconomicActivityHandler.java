@@ -20,7 +20,7 @@ public class RemoveEconomicActivityHandler extends CommandHandler<RemoveEconomic
     @Override
     protected Mono<Void> doHandle(RemoveEconomicActivityLinkCommand cmd) {
         return partyEconomicActivitiesApi
-                .deletePartyEconomicActivity(cmd.partyId(), cmd.economicActivityLinkId(), UUID.randomUUID().toString())
+                .deletePartyEconomicActivity(cmd.partyId(), cmd.economicActivityLinkId())
                 .then();
     }
 }

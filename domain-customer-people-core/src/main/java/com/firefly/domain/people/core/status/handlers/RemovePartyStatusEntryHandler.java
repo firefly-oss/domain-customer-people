@@ -19,6 +19,6 @@ public class RemovePartyStatusEntryHandler extends CommandHandler<RemovePartySta
 
     @Override
     protected Mono<Void> doHandle(RemovePartyStatusEntryCommand cmd) {
-        return partyStatusesApi.deletePartyStatus(cmd.partyId(), cmd.partyStatusId(), UUID.randomUUID().toString()).then();
+        return partyStatusesApi.deletePartyStatus(cmd.partyId(), cmd.partyStatusId()).then();
     }
 }

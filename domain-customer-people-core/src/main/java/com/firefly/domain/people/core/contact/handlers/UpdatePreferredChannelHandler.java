@@ -40,7 +40,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
         // First, set all existing email contacts to non-primary
         FilterRequestEmailContactDTO filterRequest = new FilterRequestEmailContactDTO();
         filterRequest.setFilters(new EmailContactDTO(cmd.getEmailCommand().getEmailContactId()));
-        return emailContactsApi.filterEmailContacts(cmd.getPartyId(), filterRequest, UUID.randomUUID().toString())
+        return emailContactsApi.filterEmailContacts(cmd.getPartyId(), filterRequest)
                 .flatMap(paginationResponse -> {
                     // Set all existing email contacts to non-primary
                     return Mono.when(
@@ -48,10 +48,9 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                                     .map(emailContact -> {
                                         emailContact.setIsPrimary(false);
                                         return emailContactsApi.updateEmailContact(
-                                                cmd.getPartyId(), 
+                                                cmd.getPartyId(),
                                                 emailContact.getEmailContactId(),
-                                                emailContact,
-                                                UUID.randomUUID().toString()
+                                                emailContact
                                         );
                                     })
                                     .toArray(Mono[]::new)
@@ -60,7 +59,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                 .then(Mono.defer(() -> {
                     // Then set the current email contact to primary
                     UpdateEmailCommand emailCommand = cmd.getEmailCommand().withPrimary(true);
-                    return emailContactsApi.updateEmailContact(cmd.getPartyId(), emailCommand.getEmailContactId(), emailCommand, UUID.randomUUID().toString());
+                    return emailContactsApi.updateEmailContact(cmd.getPartyId(), emailCommand.getEmailContactId(), emailCommand);
                 }))
                 .then();
     }
@@ -73,7 +72,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
         // First, set all existing phone contacts to non-primary
         FilterRequestPhoneContactDTO filterRequest = new FilterRequestPhoneContactDTO();
         filterRequest.setFilters(new PhoneContactDTO(cmd.getPhoneCommand().getPhoneContactId()));
-        return phoneContactsApi.filterPhoneContacts(cmd.getPartyId(), filterRequest, UUID.randomUUID().toString())
+        return phoneContactsApi.filterPhoneContacts(cmd.getPartyId(), filterRequest)
                 .flatMap(paginationResponse -> {
                     // Set all existing phone contacts to non-primary
                     return Mono.when(
@@ -81,10 +80,9 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                                     .map(phoneContact -> {
                                         phoneContact.setIsPrimary(false);
                                         return phoneContactsApi.updatePhoneContact(
-                                                cmd.getPartyId(), 
+                                                cmd.getPartyId(),
                                                 phoneContact.getPhoneContactId(),
-                                                phoneContact,
-                                                UUID.randomUUID().toString()
+                                                phoneContact
                                         );
                                     })
                                     .toArray(Mono[]::new)
@@ -93,7 +91,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                 .then(Mono.defer(() -> {
                     // Then set the current phone contact to primary
                     UpdatePhoneCommand phoneCommand = cmd.getPhoneCommand().withPrimary(true);
-                    return phoneContactsApi.updatePhoneContact(cmd.getPartyId(), phoneCommand.getPhoneContactId(), phoneCommand, UUID.randomUUID().toString());
+                    return phoneContactsApi.updatePhoneContact(cmd.getPartyId(), phoneCommand.getPhoneContactId(), phoneCommand);
                 }))
                 .then();
     }

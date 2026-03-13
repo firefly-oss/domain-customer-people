@@ -20,7 +20,7 @@ public class UpdatePhoneHandler extends CommandHandler<UpdatePhoneCommand, UUID>
 
     @Override
     protected Mono<UUID> doHandle(UpdatePhoneCommand cmd) {
-        return phoneContactsApi.updatePhoneContact(cmd.getPartyId(), cmd.getPhoneContactId(), cmd, UUID.randomUUID().toString())
+        return phoneContactsApi.updatePhoneContact(cmd.getPartyId(), cmd.getPhoneContactId(), cmd)
                 .mapNotNull(phoneContactDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(phoneContactDTO).getPhoneContactId()));
     }

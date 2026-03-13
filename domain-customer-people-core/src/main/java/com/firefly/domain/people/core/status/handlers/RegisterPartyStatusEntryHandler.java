@@ -21,7 +21,7 @@ public class RegisterPartyStatusEntryHandler extends CommandHandler<RegisterPart
     @Override
     protected Mono<UUID> doHandle(RegisterPartyStatusEntryCommand cmd) {
         return partyStatusesApi
-                .createPartyStatus(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
+                .createPartyStatus(cmd.getPartyId(), cmd)
                 .mapNotNull(partyStatusDTO ->
                         Objects.requireNonNull(partyStatusDTO.getPartyStatusId()));
     }

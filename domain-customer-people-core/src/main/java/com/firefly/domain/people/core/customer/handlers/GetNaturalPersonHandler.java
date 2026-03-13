@@ -20,6 +20,6 @@ public class GetNaturalPersonHandler extends QueryHandler<NaturalPersonQuery, Na
 
     @Override
     protected Mono<NaturalPersonDTO> doHandle(NaturalPersonQuery cmd) {
-        return naturalPersonsApi.getNaturalPersonByPartyId(cmd.getPartyId(), UUID.randomUUID().toString());
+        return naturalPersonsApi.getNaturalPersonByPartyId(cmd.getPartyId());
     }
 }

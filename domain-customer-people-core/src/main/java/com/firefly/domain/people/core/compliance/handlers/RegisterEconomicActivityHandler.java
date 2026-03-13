@@ -21,7 +21,7 @@ public class RegisterEconomicActivityHandler extends CommandHandler<RegisterEcon
     @Override
     protected Mono<UUID> doHandle(RegisterEconomicActivityLinkCommand cmd) {
         return partyEconomicActivitiesApi
-                .createPartyEconomicActivity(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
+                .createPartyEconomicActivity(cmd.getPartyId(), cmd)
                 .mapNotNull(economicActivityDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(economicActivityDTO).getEconomicActivityId()));
     }

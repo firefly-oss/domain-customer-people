@@ -22,7 +22,7 @@ public class UpdateAddressHandler extends CommandHandler<UpdateAddressCommand, U
 
     @Override
     protected Mono<UUID> doHandle(UpdateAddressCommand cmd) {
-        return addressesApi.updateAddress(cmd.getPartyId(), cmd.getAddressId(), cmd, UUID.randomUUID().toString())
+        return addressesApi.updateAddress(cmd.getPartyId(), cmd.getAddressId(), cmd)
                 .mapNotNull(addressDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(addressDTO).getAddressId()));
     }

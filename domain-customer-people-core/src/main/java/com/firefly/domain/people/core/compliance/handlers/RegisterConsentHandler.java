@@ -22,7 +22,7 @@ public class RegisterConsentHandler extends CommandHandler<RegisterConsentComman
     @Override
     protected Mono<UUID> doHandle(RegisterConsentCommand cmd) {
         return consentsApi
-                .createConsent(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
+                .createConsent(cmd.getPartyId(), cmd)
                 .mapNotNull(consentDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(consentDTO).getConsentId()));
     }

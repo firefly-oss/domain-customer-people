@@ -21,7 +21,7 @@ public class RegisterNaturalPersonHandler extends CommandHandler<RegisterNatural
     @Override
     protected Mono<UUID> doHandle(RegisterNaturalPersonCommand cmd) {
         return naturalPersonsApi
-                .createNaturalPerson(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
+                .createNaturalPerson(cmd.getPartyId(), cmd)
                 .mapNotNull(naturalPersonDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(naturalPersonDTO)).getNaturalPersonId());
     }

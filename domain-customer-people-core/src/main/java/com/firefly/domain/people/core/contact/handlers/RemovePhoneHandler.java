@@ -20,7 +20,7 @@ public class RemovePhoneHandler extends CommandHandler<RemovePhoneCommand, Void>
     @Override
     protected Mono<Void> doHandle(RemovePhoneCommand cmd) {
         return phoneContactsApi
-                .deletePhoneContact(cmd.partyId(), cmd.phoneId(), UUID.randomUUID().toString())
+                .deletePhoneContact(cmd.partyId(), cmd.phoneId())
                 .then();
     }
 }

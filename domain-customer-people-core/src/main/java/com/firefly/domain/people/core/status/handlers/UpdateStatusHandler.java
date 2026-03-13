@@ -20,7 +20,7 @@ public class UpdateStatusHandler extends CommandHandler<UpdateStatusCommand, UUI
 
     @Override
     protected Mono<UUID> doHandle(UpdateStatusCommand cmd) {
-        return partyStatusesApi.updatePartyStatus(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
+        return partyStatusesApi.updatePartyStatus(cmd.getPartyId(), cmd)
                 .mapNotNull(partyStatusDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(partyStatusDTO).getPartyStatusId()));
     }

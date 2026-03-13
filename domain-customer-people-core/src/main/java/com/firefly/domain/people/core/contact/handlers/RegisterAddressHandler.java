@@ -22,7 +22,7 @@ public class RegisterAddressHandler extends CommandHandler<RegisterAddressComman
     @Override
     protected Mono<UUID> doHandle(RegisterAddressCommand cmd) {
         return addressesApi
-                .createAddress(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
+                .createAddress(cmd.getPartyId(), cmd)
                 .mapNotNull(addressDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(addressDTO).getAddressId()));
     }
