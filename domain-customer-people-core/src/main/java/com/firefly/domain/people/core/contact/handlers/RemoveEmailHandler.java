@@ -20,7 +20,7 @@ public class RemoveEmailHandler extends CommandHandler<RemoveEmailCommand, Void>
     @Override
     protected Mono<Void> doHandle(RemoveEmailCommand cmd) {
         return emailContactsApi
-                .deleteEmailContact(cmd.partyId(), cmd.emailId())
+                .deleteEmailContact(cmd.partyId(), cmd.emailId(), UUID.randomUUID().toString())
                 .then();
     }
 }

@@ -20,7 +20,7 @@ public class RemoveIdentityDocumentHandler extends CommandHandler<RemoveIdentity
     @Override
     protected Mono<Void> doHandle(RemoveIdentityDocumentCommand cmd) {
         return identityDocumentsApi
-                .deleteIdentityDocument(cmd.partyId(), cmd.identityDocumentId())
+                .deleteIdentityDocument(cmd.partyId(), cmd.identityDocumentId(), UUID.randomUUID().toString())
                 .then();
     }
 }

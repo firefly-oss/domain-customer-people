@@ -22,7 +22,7 @@ public class RegisterIdentityDocumentHandler extends CommandHandler<RegisterIden
     protected Mono<UUID> doHandle(RegisterIdentityDocumentCommand cmd) {
                 
         return identityDocumentsApi
-                .createIdentityDocument(cmd.getPartyId(), cmd)
+                .createIdentityDocument(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
                 .mapNotNull(identityDocumentDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(identityDocumentDTO).getIdentityDocumentId()));
     }

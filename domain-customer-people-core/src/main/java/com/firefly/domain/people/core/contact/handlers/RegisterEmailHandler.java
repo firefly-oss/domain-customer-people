@@ -22,7 +22,7 @@ public class RegisterEmailHandler extends CommandHandler<RegisterEmailCommand, U
     @Override
     protected Mono<UUID> doHandle(RegisterEmailCommand cmd) {
         return emailContactsApi
-                .createEmailContact(cmd.getPartyId(), cmd)
+                .createEmailContact(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
                 .mapNotNull(emailContactDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(emailContactDTO).getEmailContactId()));
     }

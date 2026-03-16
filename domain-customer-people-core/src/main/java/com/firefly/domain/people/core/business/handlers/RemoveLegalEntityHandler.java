@@ -21,6 +21,6 @@ public class RemoveLegalEntityHandler extends CommandHandler<RemoveLegalEntityCo
 
     @Override
     protected Mono<Void> doHandle(RemoveLegalEntityCommand cmd) {
-        return legalEntitiesApi.deleteLegalEntity(cmd.partyId(), cmd.legalEntityId()).then();
+        return legalEntitiesApi.deleteLegalEntity(cmd.partyId(), cmd.legalEntityId(), UUID.randomUUID().toString()).then();
     }
 }

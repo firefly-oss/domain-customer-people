@@ -40,7 +40,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
         // First, set all existing email contacts to non-primary
         FilterRequestEmailContactDTO filterRequest = new FilterRequestEmailContactDTO();
         filterRequest.setFilters(new EmailContactDTO(cmd.getEmailCommand().getEmailContactId()));
-        return emailContactsApi.filterEmailContacts(cmd.getPartyId(), filterRequest)
+        return emailContactsApi.filterEmailContacts(cmd.getPartyId(), filterRequest, UUID.randomUUID().toString())
                 .flatMap(paginationResponse -> {
                     // Set all existing email contacts to non-primary
                     return Mono.when(
@@ -50,7 +50,8 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                                         return emailContactsApi.updateEmailContact(
                                                 cmd.getPartyId(),
                                                 emailContact.getEmailContactId(),
-                                                emailContact
+                                                emailContact,
+                                                null
                                         );
                                     })
                                     .toArray(Mono[]::new)
@@ -59,7 +60,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                 .then(Mono.defer(() -> {
                     // Then set the current email contact to primary
                     UpdateEmailCommand emailCommand = cmd.getEmailCommand().withPrimary(true);
-                    return emailContactsApi.updateEmailContact(cmd.getPartyId(), emailCommand.getEmailContactId(), emailCommand);
+                    return emailContactsApi.updateEmailContact(cmd.getPartyId(), emailCommand.getEmailContactId(), emailCommand, UUID.randomUUID().toString());
                 }))
                 .then();
     }
@@ -72,7 +73,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
         // First, set all existing phone contacts to non-primary
         FilterRequestPhoneContactDTO filterRequest = new FilterRequestPhoneContactDTO();
         filterRequest.setFilters(new PhoneContactDTO(cmd.getPhoneCommand().getPhoneContactId()));
-        return phoneContactsApi.filterPhoneContacts(cmd.getPartyId(), filterRequest)
+        return phoneContactsApi.filterPhoneContacts(cmd.getPartyId(), filterRequest, UUID.randomUUID().toString())
                 .flatMap(paginationResponse -> {
                     // Set all existing phone contacts to non-primary
                     return Mono.when(
@@ -82,7 +83,8 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                                         return phoneContactsApi.updatePhoneContact(
                                                 cmd.getPartyId(),
                                                 phoneContact.getPhoneContactId(),
-                                                phoneContact
+                                                phoneContact,
+                                                null
                                         );
                                     })
                                     .toArray(Mono[]::new)
@@ -91,7 +93,7 @@ public class UpdatePreferredChannelHandler extends CommandHandler<UpdatePreferre
                 .then(Mono.defer(() -> {
                     // Then set the current phone contact to primary
                     UpdatePhoneCommand phoneCommand = cmd.getPhoneCommand().withPrimary(true);
-                    return phoneContactsApi.updatePhoneContact(cmd.getPartyId(), phoneCommand.getPhoneContactId(), phoneCommand);
+                    return phoneContactsApi.updatePhoneContact(cmd.getPartyId(), phoneCommand.getPhoneContactId(), phoneCommand, UUID.randomUUID().toString());
                 }))
                 .then();
     }

@@ -19,6 +19,6 @@ public class RemoveNaturalPersonHandler extends CommandHandler<RemoveNaturalPers
 
     @Override
     protected Mono<Void> doHandle(RemoveNaturalPersonCommand cmd) {
-        return naturalPersonsApi.deleteNaturalPerson(cmd.partyId(), cmd.naturalPersonId()).then();
+        return naturalPersonsApi.deleteNaturalPerson(cmd.partyId(), cmd.naturalPersonId(), UUID.randomUUID().toString()).then();
     }
 }

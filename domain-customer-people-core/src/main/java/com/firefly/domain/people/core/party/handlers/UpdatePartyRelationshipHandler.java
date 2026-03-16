@@ -21,7 +21,7 @@ public class UpdatePartyRelationshipHandler extends CommandHandler<UpdatePartyRe
     @Override
     protected Mono<UUID> doHandle(UpdatePartyRelationshipCommand cmd) {
         return partyRelationshipsApi
-                .updatePartyRelationship(cmd.getPartyRelationshipId(), cmd)
+                .updatePartyRelationship(cmd.getPartyRelationshipId(), cmd, UUID.randomUUID().toString())
                 .mapNotNull(partyRelationshipDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(partyRelationshipDTO).getPartyRelationshipId()));
     }

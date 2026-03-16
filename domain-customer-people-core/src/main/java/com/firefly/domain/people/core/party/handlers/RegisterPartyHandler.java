@@ -22,7 +22,7 @@ public class RegisterPartyHandler extends CommandHandler<RegisterPartyCommand, U
     protected Mono<UUID> doHandle(RegisterPartyCommand cmd) {
 
         return partiesApi
-                .createParty(cmd)
+                .createParty(cmd, UUID.randomUUID().toString())
                 .mapNotNull(partyDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(partyDTO).getPartyId()));
     }

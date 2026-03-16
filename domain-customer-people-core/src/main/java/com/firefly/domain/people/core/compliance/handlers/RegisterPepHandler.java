@@ -22,7 +22,7 @@ public class RegisterPepHandler extends CommandHandler<RegisterPepCommand, UUID>
     @Override
     protected Mono<UUID> doHandle(RegisterPepCommand cmd) {
         return politicallyExposedPersonsApi
-                .createPoliticallyExposedPerson(cmd.getPartyId(), cmd)
+                .createPoliticallyExposedPerson(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
                 .mapNotNull(pepDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(pepDTO).getPepId()));
     }

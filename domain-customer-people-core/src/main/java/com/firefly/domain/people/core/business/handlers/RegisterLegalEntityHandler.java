@@ -23,7 +23,7 @@ public class RegisterLegalEntityHandler extends CommandHandler<RegisterLegalEnti
     @Override
     protected Mono<UUID> doHandle(RegisterLegalEntityCommand cmd) {
         return legalEntitiesApi
-                .createLegalEntity(cmd.getPartyId(), cmd)
+                .createLegalEntity(cmd.getPartyId(), cmd, UUID.randomUUID().toString())
                 .mapNotNull(legalEntityDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(legalEntityDTO)).getLegalEntityId());
     }

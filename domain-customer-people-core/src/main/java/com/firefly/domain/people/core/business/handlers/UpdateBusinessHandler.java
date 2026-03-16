@@ -22,7 +22,7 @@ public class UpdateBusinessHandler extends CommandHandler<UpdateBusinessCommand,
 
     @Override
     protected Mono<UUID> doHandle(UpdateBusinessCommand cmd) {
-        return legalEntitiesApi.updateLegalEntity(cmd.getPartyId(), cmd.getLegalEntityId(), cmd)
+        return legalEntitiesApi.updateLegalEntity(cmd.getPartyId(), cmd.getLegalEntityId(), cmd, UUID.randomUUID().toString())
                 .mapNotNull(legalEntityDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(legalEntityDTO).getLegalEntityId()));
     }

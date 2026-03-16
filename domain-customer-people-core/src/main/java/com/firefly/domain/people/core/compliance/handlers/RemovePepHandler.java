@@ -20,7 +20,7 @@ public class RemovePepHandler extends CommandHandler<RemovePepCommand, Void> {
     @Override
     protected Mono<Void> doHandle(RemovePepCommand cmd) {
         return politicallyExposedPersonsApi
-                .deletePoliticallyExposedPerson(cmd.partyId(), cmd.pepId())
+                .deletePoliticallyExposedPerson(cmd.partyId(), cmd.pepId(), UUID.randomUUID().toString())
                 .then();
     }
 }

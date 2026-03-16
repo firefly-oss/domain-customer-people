@@ -20,7 +20,7 @@ public class RemoveAddressHandler extends CommandHandler<RemoveAddressCommand, V
     @Override
     protected Mono<Void> doHandle(RemoveAddressCommand cmd) {
         return addressesApi
-                .deleteAddress(cmd.partyId(), cmd.addressId())
+                .deleteAddress(cmd.partyId(), cmd.addressId(), UUID.randomUUID().toString())
                 .then();
     }
 }

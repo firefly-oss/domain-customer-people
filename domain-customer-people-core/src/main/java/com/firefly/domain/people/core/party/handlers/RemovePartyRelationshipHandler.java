@@ -20,6 +20,6 @@ public class RemovePartyRelationshipHandler extends CommandHandler<RemovePartyRe
     @Override
     protected Mono<Void> doHandle(RemovePartyRelationshipCommand cmd) {
         return partyRelationshipsApi
-                .deletePartyRelationship(cmd.partyRelationshipId());
+                .deletePartyRelationship(cmd.partyRelationshipId(), UUID.randomUUID().toString());
     }
 }

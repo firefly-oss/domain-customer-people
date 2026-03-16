@@ -20,7 +20,7 @@ public class UpdateCustomerHandler extends CommandHandler<UpdateCustomerCommand,
 
     @Override
     protected Mono<UUID> doHandle(UpdateCustomerCommand cmd) {
-        return naturalPersonsApi.updateNaturalPerson(cmd.getPartyId(), cmd.getNaturalPersonId(), cmd)
+        return naturalPersonsApi.updateNaturalPerson(cmd.getPartyId(), cmd.getNaturalPersonId(), cmd, UUID.randomUUID().toString())
                 .mapNotNull(naturalPersonDTO ->
                         Objects.requireNonNull(Objects.requireNonNull(naturalPersonDTO).getNaturalPersonId()));
     }

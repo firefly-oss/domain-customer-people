@@ -19,6 +19,6 @@ public class RemovePartyHandler extends CommandHandler<RemovePartyCommand, Void>
 
     @Override
     protected Mono<Void> doHandle(RemovePartyCommand cmd) {
-        return partiesApi.deleteParty(cmd.partyId()).then();
+        return partiesApi.deleteParty(cmd.partyId(), UUID.randomUUID().toString()).then();
     }
 }
