@@ -1,0 +1,2671 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:18080
+  description: Generated server url
+tags:
+- name: Party Contact Queries
+  description: Query endpoints for party contact information
+- name: Customers
+  description: CQ queries and registration for customers
+- name: Businesses
+  description: CQ queries and registration for businesses
+- name: Relationships
+  description: CQ queries and registration for party relationships
+paths:
+  /api/v1/party-relationships/{relationId}:
+    put:
+      tags:
+      - Relationships
+      summary: Update relationship
+      description: Updates an existing relationship
+      operationId: updateRelationship
+      parameters:
+      - name: relationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePartyRelationshipCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Relationships
+      summary: Remove relationship
+      description: Remove relationship.
+      operationId: removeRelationship
+      parameters:
+      - name: relationId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers:
+    put:
+      tags:
+      - Customers
+      summary: Update customer
+      description: Updates an existing customer
+      operationId: updateCustomer
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCustomerCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+      - Customers
+      summary: Register a customer
+      description: Registers a customer
+      operationId: registerCustomer
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterCustomerCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/phones/{phoneId}:
+    put:
+      tags:
+      - Customers
+      summary: Update customer email
+      description: Modify phone fields keeping version history.
+      operationId: updateCustomerPhone
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: phoneId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePhoneCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Customers
+      summary: Remove customer phone
+      description: Remove phone from profile.
+      operationId: removeCustomerPhone
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: phoneId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/emails/{emailId}:
+    put:
+      tags:
+      - Customers
+      summary: Update customer email
+      description: Modify email fields keeping version history.
+      operationId: updateCustomerEmail
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEmailCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Customers
+      summary: Remove customer email
+      description: Remove email from profile.
+      operationId: removeCustomerEmail
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/addresses/{addressId}:
+    put:
+      tags:
+      - Customers
+      summary: Update customer address
+      description: Modify address fields keeping version history.
+      operationId: updateCustomerAddress
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: addressId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAddressCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Customers
+      summary: Remove customer address
+      description: Remove or end-date an address; preserve audit.
+      operationId: removeCustomerAddress
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: addressId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses:
+    put:
+      tags:
+      - Businesses
+      summary: Update business
+      description: Updates the name of an existing business
+      operationId: updateBusiness
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBusinessCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+      - Businesses
+      summary: Register a business
+      description: Registers a business
+      operationId: registerBusiness
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterBusinessCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/phones/{phoneId}:
+    put:
+      tags:
+      - Businesses
+      summary: Update business email
+      description: Modify phone fields keeping version history.
+      operationId: updateBusinessPhone
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: phoneId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePhoneCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Businesses
+      summary: Remove business phone
+      description: Remove phone from profile.
+      operationId: removeBusinessPhone
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: phoneId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/emails/{emailId}:
+    put:
+      tags:
+      - Businesses
+      summary: Update business email
+      description: Modify email fields keeping version history.
+      operationId: updateBusinessEmail
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateEmailCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Businesses
+      summary: Remove business email
+      description: Remove email from profile.
+      operationId: removeBusinessEmail
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: emailId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/addresses/{addressId}:
+    put:
+      tags:
+      - Businesses
+      summary: Update business address
+      description: Modify address fields keeping version history.
+      operationId: updateBusinessAddress
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: addressId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAddressCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+    delete:
+      tags:
+      - Businesses
+      summary: Remove business address
+      description: Remove or end-date an address; preserve audit.
+      operationId: removeBusinessAddress
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: addressId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/party-relationships:
+    post:
+      tags:
+      - Relationships
+      summary: Register a relationship
+      description: Registers a relationship
+      operationId: registerRelationship
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterPartyRelationshipCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/unlock:
+    post:
+      tags:
+      - Customers
+      summary: Unlock customer profile
+      description: Unlock profile for changes.
+      operationId: unlockCustomerProfile
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/reactivate:
+    post:
+      tags:
+      - Customers
+      summary: Reactivate customer
+      description: Reactivate a dormant profile.
+      operationId: reactivateCustomer
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/preferred-channel:
+    post:
+      tags:
+      - Customers
+      summary: Set preferred channel
+      description: Set preferred contact channel (email/phone); one per type.
+      operationId: setPreferredChannel
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePreferredChannelCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/phones:
+    post:
+      tags:
+      - Customers
+      summary: Add customer phone
+      description: Add phone in E.164 with label (mobile/landline).
+      operationId: addCustomerPhone
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterPhoneCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/lock:
+    post:
+      tags:
+      - Customers
+      summary: Lock customer profile
+      description: Lock profile for audit/investigation; block writes.
+      operationId: lockCustomerProfile
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/id-documents:
+    post:
+      tags:
+      - Customers
+      summary: Add tax id
+      description: Add secondary tax ID; validate format/uniqueness
+      operationId: addTaxId
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterIdentityDocumentCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/emails:
+    post:
+      tags:
+      - Customers
+      summary: Add customer email
+      description: Add email; validate format and uniqueness within customer.
+      operationId: addCustomerEmail
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterEmailCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/dormant:
+    post:
+      tags:
+      - Customers
+      summary: Mark customer dormant
+      description: Flag profile as dormant due to inactivity.
+      operationId: markCustomerDormant
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/deceased:
+    post:
+      tags:
+      - Customers
+      summary: Mark customer deceased
+      description: Mark as deceased and block dependent operations.
+      operationId: markCustomerDeceased
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/confirm-closure:
+    post:
+      tags:
+      - Customers
+      summary: Confirm customer closure
+      description: Confirm closure after checks pass.
+      operationId: confirmCustomerClosure
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/closure-request:
+    post:
+      tags:
+      - Customers
+      summary: Request customer closure
+      description: Request customer closure once obligations are zero.
+      operationId: requestCustomerClosure
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/customers/{partyId}/addresses:
+    post:
+      tags:
+      - Customers
+      summary: Add customer address
+      description: Add an address with validity period; prevent primary overlaps.
+      operationId: addCustomerAddress
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterAddressCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/unlock:
+    post:
+      tags:
+      - Businesses
+      summary: Unlock business profile
+      description: Unlock profile for changes.
+      operationId: unlockBusinessProfile
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/reactivate:
+    post:
+      tags:
+      - Businesses
+      summary: Reactivate business
+      description: Reactivate a dormant profile.
+      operationId: reactivateBusiness
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/phones:
+    post:
+      tags:
+      - Businesses
+      summary: Add business phone
+      description: Add phone in E.164 with label (mobile/landline).
+      operationId: addBusinessPhone
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterPhoneCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/lock:
+    post:
+      tags:
+      - Businesses
+      summary: Lock business profile
+      description: Lock profile for audit/investigation; block writes.
+      operationId: lockBusinessProfile
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/emails:
+    post:
+      tags:
+      - Businesses
+      summary: Add business email
+      description: Add email; validate format and uniqueness within business.
+      operationId: addBusinessEmail
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterEmailCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/dormant:
+    post:
+      tags:
+      - Businesses
+      summary: Mark business dormant
+      description: Flag profile as dormant due to inactivity.
+      operationId: markBusinessDormant
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/defunct:
+    post:
+      tags:
+      - Businesses
+      summary: Mark business defunct
+      description: Mark as defunct and block dependent operations.
+      operationId: markBusinessDefunct
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/confirm-closure:
+    post:
+      tags:
+      - Businesses
+      summary: Confirm business closure
+      description: Confirm closure after checks pass.
+      operationId: confirmBusinessClosure
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/closure-request:
+    post:
+      tags:
+      - Businesses
+      summary: Request business closure
+      description: Request customer closure once obligations are zero.
+      operationId: requestBusinessClosure
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/businesses/{partyId}/addresses:
+    post:
+      tags:
+      - Businesses
+      summary: Add business address
+      description: Add an address with validity period; prevent primary overlaps.
+      operationId: addBusinessAddress
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterAddressCommand"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /api/v1/parties/{partyId}/phones:
+    get:
+      tags:
+      - Party Contact Queries
+      summary: Get party phones
+      description: Retrieve all phone contacts for a given party.
+      operationId: getPartyPhones
+      parameters:
+      - name: partyId
+        in: path
+        description: The party identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponsePhoneContactDTO"
+  /api/v1/parties/{partyId}/identity-documents:
+    get:
+      tags:
+      - Party Contact Queries
+      summary: Get party identity documents
+      description: Retrieve all identity documents for a given party.
+      operationId: getPartyIdentityDocuments
+      parameters:
+      - name: partyId
+        in: path
+        description: The party identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponse"
+  /api/v1/parties/{partyId}/emails:
+    get:
+      tags:
+      - Party Contact Queries
+      summary: Get party emails
+      description: Retrieve all email contacts for a given party.
+      operationId: getPartyEmails
+      parameters:
+      - name: partyId
+        in: path
+        description: The party identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponseEmailContactDTO"
+  /api/v1/parties/{partyId}/consents:
+    get:
+      tags:
+      - Party Contact Queries
+      summary: Get party consents
+      description: Retrieve all consents for a given party.
+      operationId: getPartyConsents
+      parameters:
+      - name: partyId
+        in: path
+        description: The party identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponse"
+  /api/v1/parties/{partyId}/addresses:
+    get:
+      tags:
+      - Party Contact Queries
+      summary: Get party addresses
+      description: Retrieve all addresses for a given party.
+      operationId: getPartyAddresses
+      parameters:
+      - name: partyId
+        in: path
+        description: The party identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PaginationResponse"
+  /api/v1/customers/{customerId}:
+    get:
+      tags:
+      - Customers
+      summary: Get customer info
+      description: Retrieve customer information by customer ID.
+      operationId: getCustomerInfo
+      parameters:
+      - name: customerId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/NaturalPersonDTO"
+  /api/v1/businesses/{businessId}:
+    get:
+      tags:
+      - Businesses
+      summary: Get business info
+      description: Retrieve business information by business ID.
+      operationId: getBusinessInfo
+      parameters:
+      - name: businessId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/LegalEntityDTO"
+  /api/v1/customers/{partyId}/id-documents/{taxId}:
+    delete:
+      tags:
+      - Customers
+      summary: Remove tax id
+      description: Remove a tax ID from the profile
+      operationId: removeTaxId
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: taxId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+components:
+  schemas:
+    UpdatePartyRelationshipCommand:
+      required:
+      - fromPartyId
+      - relationshipTypeId
+      - toPartyId
+      type: object
+      properties:
+        partyRelationshipId:
+          type: string
+          format: uuid
+        fromPartyId:
+          type: string
+          format: uuid
+        toPartyId:
+          type: string
+          format: uuid
+        relationshipTypeId:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdateCustomerCommand:
+      required:
+      - familyName1
+      - givenName
+      - partyId
+      type: object
+      properties:
+        naturalPersonId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        givenName:
+          type: string
+        middleName:
+          type: string
+        familyName1:
+          type: string
+        familyName2:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        birthPlace:
+          type: string
+        birthCountryId:
+          type: string
+          format: uuid
+        nationalityCountryId:
+          type: string
+          format: uuid
+        gender:
+          type: string
+          enum:
+          - MALE
+          - FEMALE
+          - NON_BINARY
+          - UNSPECIFIED
+        maritalStatus:
+          type: string
+          enum:
+          - SINGLE
+          - MARRIED
+          - DIVORCED
+          - WIDOWED
+        taxIdNumber:
+          type: string
+        residencyStatus:
+          type: string
+          enum:
+          - RESIDENT
+          - NON_RESIDENT
+        occupation:
+          type: string
+        monthlyIncome:
+          type: number
+        suffix:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdatePhoneCommand:
+      required:
+      - partyId
+      - phoneKind
+      - phoneNumber
+      type: object
+      properties:
+        phoneContactId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        phoneNumber:
+          type: string
+        phoneKind:
+          type: string
+          enum:
+          - MOBILE
+          - HOME
+          - WORK
+          - OTHER
+        isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        extension:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdateEmailCommand:
+      required:
+      - email
+      - emailKind
+      - partyId
+      type: object
+      properties:
+        emailContactId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        email:
+          type: string
+        emailKind:
+          type: string
+          enum:
+          - PERSONAL
+          - BUSINESS
+          - OTHER
+        isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdateAddressCommand:
+      required:
+      - addressKind
+      - city
+      - countryId
+      - line1
+      - partyId
+      type: object
+      properties:
+        addressId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        addressKind:
+          type: string
+          enum:
+          - HOME
+          - WORK
+          - MAILING
+          - REGISTERED
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        countryId:
+          type: string
+          format: uuid
+        isPrimary:
+          type: boolean
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdateBusinessCommand:
+      required:
+      - legalName
+      - partyId
+      type: object
+      properties:
+        legalEntityId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        legalName:
+          type: string
+        tradeName:
+          type: string
+        registrationNumber:
+          type: string
+        taxIdNumber:
+          type: string
+        legalFormId:
+          type: string
+          format: uuid
+        incorporationDate:
+          type: string
+          format: date
+        industryDescription:
+          type: string
+        headcount:
+          type: integer
+          format: int64
+        shareCapital:
+          type: number
+        websiteUrl:
+          type: string
+        incorporationCountryId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterPartyRelationshipCommand:
+      required:
+      - fromPartyId
+      - relationshipTypeId
+      - toPartyId
+      type: object
+      properties:
+        partyRelationshipId:
+          type: string
+          format: uuid
+        fromPartyId:
+          type: string
+          format: uuid
+        toPartyId:
+          type: string
+          format: uuid
+        relationshipTypeId:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        active:
+          type: boolean
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterAddressCommand:
+      required:
+      - addressKind
+      - city
+      - countryId
+      - line1
+      - partyId
+      type: object
+      properties:
+        addressId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        addressKind:
+          type: string
+          enum:
+          - HOME
+          - WORK
+          - MAILING
+          - REGISTERED
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        countryId:
+          type: string
+          format: uuid
+        isPrimary:
+          type: boolean
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterConsentCommand:
+      required:
+      - consentTypeId
+      - granted
+      - partyId
+      type: object
+      properties:
+        consentId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        consentTypeId:
+          type: string
+          format: uuid
+        granted:
+          type: boolean
+        grantedAt:
+          type: string
+          format: date-time
+        revokedAt:
+          type: string
+          format: date-time
+        channel:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterCustomerCommand:
+      type: object
+      properties:
+        party:
+          $ref: "#/components/schemas/RegisterPartyCommand"
+        naturalPerson:
+          $ref: "#/components/schemas/RegisterNaturalPersonCommand"
+        statusHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyStatusEntryCommand"
+        pep:
+          $ref: "#/components/schemas/RegisterPepCommand"
+        identityDocuments:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterIdentityDocumentCommand"
+        addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterAddressCommand"
+        emails:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterEmailCommand"
+        phones:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPhoneCommand"
+        economicActivities:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterEconomicActivityLinkCommand"
+        consents:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterConsentCommand"
+        providers:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyProviderCommand"
+        relationships:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyRelationshipCommand"
+        groupMemberships:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyGroupMembershipCommand"
+    RegisterEconomicActivityLinkCommand:
+      required:
+      - economicActivityId
+      - partyId
+      type: object
+      properties:
+        partyEconomicActivityId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        economicActivityId:
+          type: string
+          format: uuid
+        annualTurnover:
+          type: number
+        currencyCode:
+          type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        isPrimary:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterEmailCommand:
+      required:
+      - email
+      - emailKind
+      - partyId
+      type: object
+      properties:
+        emailContactId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        email:
+          type: string
+        emailKind:
+          type: string
+          enum:
+          - PERSONAL
+          - BUSINESS
+          - OTHER
+        isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterIdentityDocumentCommand:
+      required:
+      - documentNumber
+      - identityDocumentCategoryId
+      - identityDocumentTypeId
+      - issuingCountryId
+      - partyId
+      type: object
+      properties:
+        identityDocumentId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        identityDocumentCategoryId:
+          type: string
+          format: uuid
+        identityDocumentTypeId:
+          type: string
+          format: uuid
+        documentNumber:
+          type: string
+        issuingCountryId:
+          type: string
+          format: uuid
+        issueDate:
+          type: string
+          format: date-time
+        expiryDate:
+          type: string
+          format: date-time
+        issuingAuthority:
+          type: string
+        validated:
+          type: boolean
+        documentUri:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterNaturalPersonCommand:
+      required:
+      - familyName1
+      - givenName
+      - partyId
+      type: object
+      properties:
+        naturalPersonId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        givenName:
+          type: string
+        middleName:
+          type: string
+        familyName1:
+          type: string
+        familyName2:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        birthPlace:
+          type: string
+        birthCountryId:
+          type: string
+          format: uuid
+        nationalityCountryId:
+          type: string
+          format: uuid
+        gender:
+          type: string
+          enum:
+          - MALE
+          - FEMALE
+          - NON_BINARY
+          - UNSPECIFIED
+        maritalStatus:
+          type: string
+          enum:
+          - SINGLE
+          - MARRIED
+          - DIVORCED
+          - WIDOWED
+        taxIdNumber:
+          type: string
+        residencyStatus:
+          type: string
+          enum:
+          - RESIDENT
+          - NON_RESIDENT
+        occupation:
+          type: string
+        monthlyIncome:
+          type: number
+        suffix:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterPartyCommand:
+      required:
+      - partyKind
+      - tenantId
+      type: object
+      properties:
+        partyId:
+          type: string
+          format: uuid
+        partyKind:
+          type: string
+          enum:
+          - INDIVIDUAL
+          - ORGANIZATION
+        tenantId:
+          type: string
+          format: uuid
+        preferredLanguage:
+          type: string
+        sourceSystem:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterPartyGroupMembershipCommand:
+      required:
+      - groupId
+      - partyId
+      type: object
+      properties:
+        partyGroupMembershipId:
+          type: string
+          format: uuid
+        groupId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        isActive:
+          type: boolean
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterPartyProviderCommand:
+      required:
+      - externalReference
+      - partyId
+      - providerName
+      - providerStatus
+      type: object
+      properties:
+        partyProviderId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        providerName:
+          type: string
+        externalReference:
+          type: string
+        providerStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - ERROR
+          - SYNCING
+        lastSyncAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterPartyStatusEntryCommand:
+      required:
+      - partyId
+      - statusCode
+      type: object
+      properties:
+        partyStatusId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        statusCode:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          - SUSPENDED
+          - PENDING
+          - CLOSED
+        statusReason:
+          type: string
+        validFrom:
+          type: string
+          format: date-time
+        validTo:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterPepCommand:
+      required:
+      - partyId
+      - pep
+      type: object
+      properties:
+        pepId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        pep:
+          type: boolean
+        category:
+          type: string
+        publicPosition:
+          type: string
+        countryOfPositionId:
+          type: string
+          format: uuid
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RegisterPhoneCommand:
+      required:
+      - partyId
+      - phoneKind
+      - phoneNumber
+      type: object
+      properties:
+        phoneContactId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        phoneNumber:
+          type: string
+        phoneKind:
+          type: string
+          enum:
+          - MOBILE
+          - HOME
+          - WORK
+          - OTHER
+        isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        extension:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdatePreferredChannelCommand:
+      type: object
+      properties:
+        emailCommand:
+          $ref: "#/components/schemas/UpdateEmailCommand"
+        phoneCommand:
+          $ref: "#/components/schemas/UpdatePhoneCommand"
+        partyId:
+          type: string
+          format: uuid
+    RegisterBusinessCommand:
+      type: object
+      properties:
+        party:
+          $ref: "#/components/schemas/RegisterPartyCommand"
+        legalEntity:
+          $ref: "#/components/schemas/RegisterLegalEntityCommand"
+        statusHistory:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyStatusEntryCommand"
+        identityDocuments:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterIdentityDocumentCommand"
+        addresses:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterAddressCommand"
+        emails:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterEmailCommand"
+        phones:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPhoneCommand"
+        economicActivities:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterEconomicActivityLinkCommand"
+        providers:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyProviderCommand"
+        relationships:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyRelationshipCommand"
+        groupMemberships:
+          type: array
+          items:
+            $ref: "#/components/schemas/RegisterPartyGroupMembershipCommand"
+    RegisterLegalEntityCommand:
+      required:
+      - legalName
+      - partyId
+      type: object
+      properties:
+        legalEntityId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        legalName:
+          type: string
+        tradeName:
+          type: string
+        registrationNumber:
+          type: string
+        taxIdNumber:
+          type: string
+        legalFormId:
+          type: string
+          format: uuid
+        incorporationDate:
+          type: string
+          format: date
+        industryDescription:
+          type: string
+        headcount:
+          type: integer
+          format: int64
+        shareCapital:
+          type: number
+        websiteUrl:
+          type: string
+        incorporationCountryId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PaginationResponsePhoneContactDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/PhoneContactDTO"
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+    PhoneContactDTO:
+      required:
+      - partyId
+      - phoneKind
+      - phoneNumber
+      type: object
+      properties:
+        phoneContactId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        phoneNumber:
+          type: string
+        phoneKind:
+          type: string
+          enum:
+          - MOBILE
+          - HOME
+          - WORK
+          - OTHER
+        isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        extension:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PaginationResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            type: object
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+    EmailContactDTO:
+      required:
+      - email
+      - emailKind
+      - partyId
+      type: object
+      properties:
+        emailContactId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        email:
+          type: string
+        emailKind:
+          type: string
+          enum:
+          - PERSONAL
+          - BUSINESS
+          - OTHER
+        isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PaginationResponseEmailContactDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmailContactDTO"
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+    NaturalPersonDTO:
+      required:
+      - familyName1
+      - givenName
+      - partyId
+      type: object
+      properties:
+        naturalPersonId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        givenName:
+          type: string
+        middleName:
+          type: string
+        familyName1:
+          type: string
+        familyName2:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        birthPlace:
+          type: string
+        birthCountryId:
+          type: string
+          format: uuid
+        nationalityCountryId:
+          type: string
+          format: uuid
+        gender:
+          type: string
+          enum:
+          - MALE
+          - FEMALE
+          - NON_BINARY
+          - UNSPECIFIED
+        maritalStatus:
+          type: string
+          enum:
+          - SINGLE
+          - MARRIED
+          - DIVORCED
+          - WIDOWED
+        taxIdNumber:
+          type: string
+        residencyStatus:
+          type: string
+          enum:
+          - RESIDENT
+          - NON_RESIDENT
+        occupation:
+          type: string
+        monthlyIncome:
+          type: number
+        suffix:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LegalEntityDTO:
+      required:
+      - legalName
+      - partyId
+      type: object
+      properties:
+        legalEntityId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        legalName:
+          type: string
+        tradeName:
+          type: string
+        registrationNumber:
+          type: string
+        taxIdNumber:
+          type: string
+        legalFormId:
+          type: string
+          format: uuid
+        incorporationDate:
+          type: string
+          format: date
+        industryDescription:
+          type: string
+        headcount:
+          type: integer
+          format: int64
+        shareCapital:
+          type: number
+        websiteUrl:
+          type: string
+        incorporationCountryId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
