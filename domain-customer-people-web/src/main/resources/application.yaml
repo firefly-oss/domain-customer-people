@@ -47,7 +47,7 @@ server:
 # Clients basePath
 api-configuration:
   common-platform.customer-mgmt:
-    base-path: http://localhost:8082
+    base-path: ${ENDPOINT_CORE_CUSTOMER_MGMT:http://localhost:8082}
 
 springdoc:
   api-docs:
