@@ -277,6 +277,68 @@ paths:
             '*/*':
               schema:
                 type: object
+  /api/v1/customers/{partyId}/consents/{consentId}:
+    put:
+      tags:
+      - Customers
+      summary: Update customer consent
+      description: "Upserts the consent record identified by (partyId, consentId).\
+        \ Sets the granted flag and an optional applicationId soft link to the originating\
+        \ loan or onboarding application."
+      operationId: updateCustomerConsent
+      parameters:
+      - name: partyId
+        in: path
+        description: The owning party identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: consentId
+        in: path
+        description: The consent record identifier
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConsentCommand"
+        required: true
+      responses:
+        "200":
+          description: Consent updated
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Invalid consent payload
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Party or consent record not found
+          content:
+            '*/*':
+              schema:
+                type: object
+        "500":
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                type: object
   /api/v1/customers/{partyId}/addresses/{addressId}:
     put:
       tags:
@@ -1634,6 +1696,7 @@ components:
           enum:
           - SINGLE
           - MARRIED
+          - SEPARATED
           - DIVORCED
           - WIDOWED
         taxIdNumber:
@@ -1649,6 +1712,9 @@ components:
           type: number
         suffix:
           type: string
+        numberOfChildren:
+          type: integer
+          format: int32
         createdAt:
           type: string
           format: date-time
@@ -1720,6 +1786,20 @@ components:
         updatedAt:
           type: string
           format: date-time
+    UpdateConsentCommand:
+      type: object
+      properties:
+        partyId:
+          type: string
+          format: uuid
+        consentId:
+          type: string
+          format: uuid
+        granted:
+          type: boolean
+        applicationId:
+          type: string
+          format: uuid
     UpdateAddressCommand:
       required:
       - addressKind
@@ -1807,6 +1887,20 @@ components:
         incorporationCountryId:
           type: string
           format: uuid
+        employeeRange:
+          type: string
+        annualRevenue:
+          type: number
+        cnaeCode:
+          type: string
+        contactName:
+          type: string
+        contactPosition:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -1923,6 +2017,9 @@ components:
           format: date-time
         channel:
           type: string
+        applicationId:
+          type: string
+          format: uuid
         createdAt:
           type: string
           format: date-time
@@ -2132,6 +2229,7 @@ components:
           enum:
           - SINGLE
           - MARRIED
+          - SEPARATED
           - DIVORCED
           - WIDOWED
         taxIdNumber:
@@ -2147,6 +2245,9 @@ components:
           type: number
         suffix:
           type: string
+        numberOfChildren:
+          type: integer
+          format: int32
         createdAt:
           type: string
           format: date-time
@@ -2439,6 +2540,20 @@ components:
         incorporationCountryId:
           type: string
           format: uuid
+        employeeRange:
+          type: string
+        annualRevenue:
+          type: number
+        cnaeCode:
+          type: string
+        contactName:
+          type: string
+        contactPosition:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
         createdAt:
           type: string
           format: date-time
@@ -2604,6 +2719,7 @@ components:
           enum:
           - SINGLE
           - MARRIED
+          - SEPARATED
           - DIVORCED
           - WIDOWED
         taxIdNumber:
@@ -2619,6 +2735,9 @@ components:
           type: number
         suffix:
           type: string
+        numberOfChildren:
+          type: integer
+          format: int32
         createdAt:
           type: string
           format: date-time
@@ -2663,6 +2782,20 @@ components:
         incorporationCountryId:
           type: string
           format: uuid
+        employeeRange:
+          type: string
+        annualRevenue:
+          type: number
+        cnaeCode:
+          type: string
+        contactName:
+          type: string
+        contactPosition:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
         createdAt:
           type: string
           format: date-time

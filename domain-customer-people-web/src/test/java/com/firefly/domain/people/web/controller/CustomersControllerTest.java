@@ -1,5 +1,7 @@
 package com.firefly.domain.people.web.controller;
 
+import com.firefly.domain.people.core.compliance.commands.UpdateConsentCommand;
+import com.firefly.domain.people.core.compliance.services.ConsentService;
 import com.firefly.domain.people.core.contact.commands.*;
 import com.firefly.domain.people.core.contact.services.ContactService;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
@@ -38,13 +40,16 @@ class CustomersControllerTest {
     private StatusService statusService;
 
     @Mock
+    private ConsentService consentService;
+
+    @Mock
     private SagaResult sagaResult;
 
     private CustomersController controller;
 
     @BeforeEach
     void setUp() {
-        controller = new CustomersController(customerService, contactService, statusService);
+        controller = new CustomersController(customerService, contactService, statusService, consentService);
     }
 
     @Test
@@ -442,10 +447,31 @@ class CustomersControllerTest {
     }
 
     @Test
+    @DisplayName("Should update customer consent successfully")
+    void testUpdateCustomerConsent_ShouldReturnOkResponse() {
+        // Given
+        UUID partyId = UUID.randomUUID();
+        UUID consentId = UUID.randomUUID();
+        UpdateConsentCommand command = new UpdateConsentCommand(partyId, consentId, true, UUID.randomUUID());
+        when(consentService.updateConsent(partyId, consentId, command))
+                .thenReturn(Mono.empty());
+
+        // When
+        Mono<ResponseEntity<Object>> result = controller.updateCustomerConsent(partyId, consentId, command);
+
+        // Then
+        StepVerifier.create(result)
+                .assertNext(response -> assertEquals(200, response.getStatusCodeValue()))
+                .verifyComplete();
+
+        verify(consentService).updateConsent(partyId, consentId, command);
+    }
+
+    @Test
     @DisplayName("Constructor should set service dependencies")
     void testConstructor_ShouldSetService() {
         // When
-        CustomersController newController = new CustomersController(customerService, contactService, statusService);
+        CustomersController newController = new CustomersController(customerService, contactService, statusService, consentService);
 
         // Then
         assertNotNull(newController);
