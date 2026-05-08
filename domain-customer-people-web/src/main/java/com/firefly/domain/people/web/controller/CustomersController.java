@@ -2,6 +2,8 @@ package com.firefly.domain.people.web.controller;
 
 import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import com.firefly.core.customer.sdk.model.PartyStatusDTO;
+import com.firefly.domain.people.core.compliance.commands.UpdateConsentCommand;
+import com.firefly.domain.people.core.compliance.services.ConsentService;
 import com.firefly.domain.people.core.contact.commands.*;
 import com.firefly.domain.people.core.contact.services.ContactService;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
@@ -10,6 +12,9 @@ import com.firefly.domain.people.core.customer.services.CustomerService;
 import com.firefly.domain.people.core.status.commands.UpdateStatusCommand;
 import com.firefly.domain.people.core.status.services.StatusService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +33,7 @@ public class CustomersController {
     private final CustomerService customerService;
     private final ContactService contactService;
     private final StatusService statusService;
+    private final ConsentService consentService;
 
 
     @PostMapping
@@ -155,6 +161,31 @@ public class CustomersController {
             @PathVariable("partyId") UUID partyId,
             @PathVariable("taxId") UUID taxId) {
         return contactService.removeIdentityDocument(partyId, taxId)
+                .thenReturn(ResponseEntity.ok().build());
+    }
+
+    // Consent endpoints
+    @PutMapping("/{partyId}/consents/{consentId}")
+    @Operation(
+            summary = "Update customer consent",
+            description = "Upserts the consent record identified by (partyId, consentId). "
+                    + "Sets the granted flag and an optional applicationId soft link to the "
+                    + "originating loan or onboarding application.",
+            operationId = "updateCustomerConsent"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Consent updated"),
+            @ApiResponse(responseCode = "400", description = "Invalid consent payload"),
+            @ApiResponse(responseCode = "404", description = "Party or consent record not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public Mono<ResponseEntity<Object>> updateCustomerConsent(
+            @Parameter(description = "The owning party identifier", required = true)
+            @PathVariable("partyId") UUID partyId,
+            @Parameter(description = "The consent record identifier", required = true)
+            @PathVariable("consentId") UUID consentId,
+            @Valid @RequestBody UpdateConsentCommand command) {
+        return consentService.updateConsent(partyId, consentId, command)
                 .thenReturn(ResponseEntity.ok().build());
     }
 

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,21 +34,29 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public Mono<SagaResult> registerBusiness(RegisterBusinessCommand command) {
+        // Defensively default the optional collections so callers (notably the experience tier)
+        // can post a minimal RegisterBusinessCommand with only party, legalEntity and any
+        // subset of contact channels, without tripping ExpandEach.of(...) on null. Each
+        // collection is independent and optional for the saga's per-step expansion.
         StepInputs inputs = StepInputs.builder()
                 .forStepId("registerParty", command.party())
                 .forStepId("registerLegalEntity", command.legalEntity())
-                .forStepId("registerStatusEntry", ExpandEach.of(command.statusHistory()))
-                .forStepId("registerIdentityDocument", ExpandEach.of(command.identityDocuments()))
-                .forStepId("registerAddress", ExpandEach.of(command.addresses()))
-                .forStepId("registerEmail", ExpandEach.of(command.emails()))
-                .forStepId("registerPhone", ExpandEach.of(command.phones()))
-                .forStepId("registerEconomicActivityLink", ExpandEach.of(command.economicActivities()))
-                .forStepId("registerPartyProvider", ExpandEach.of(command.providers()))
-                .forStepId("registerPartyRelationship", ExpandEach.of(command.relationships()))
-                .forStepId("registerPartyGroupMembership", ExpandEach.of(command.groupMemberships()))
+                .forStepId("registerStatusEntry", ExpandEach.of(nullSafe(command.statusHistory())))
+                .forStepId("registerIdentityDocument", ExpandEach.of(nullSafe(command.identityDocuments())))
+                .forStepId("registerAddress", ExpandEach.of(nullSafe(command.addresses())))
+                .forStepId("registerEmail", ExpandEach.of(nullSafe(command.emails())))
+                .forStepId("registerPhone", ExpandEach.of(nullSafe(command.phones())))
+                .forStepId("registerEconomicActivityLink", ExpandEach.of(nullSafe(command.economicActivities())))
+                .forStepId("registerPartyProvider", ExpandEach.of(nullSafe(command.providers())))
+                .forStepId("registerPartyRelationship", ExpandEach.of(nullSafe(command.relationships())))
+                .forStepId("registerPartyGroupMembership", ExpandEach.of(nullSafe(command.groupMemberships())))
                 .build();
 
         return engine.execute("RegisterCustomerSaga", inputs);
+    }
+
+    private static <T> List<T> nullSafe(List<T> list) {
+        return list == null ? List.of() : list;
     }
 
     @Override

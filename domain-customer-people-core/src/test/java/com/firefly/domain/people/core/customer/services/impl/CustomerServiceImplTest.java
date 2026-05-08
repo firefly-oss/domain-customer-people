@@ -8,15 +8,19 @@ import com.firefly.domain.people.core.customer.workflows.UpdateCustomerSaga;
 import org.fireflyframework.orchestration.saga.engine.SagaResult;
 import org.fireflyframework.orchestration.saga.engine.SagaEngine;
 import org.fireflyframework.orchestration.saga.engine.StepInputs;
+import com.firefly.domain.people.core.party.commands.RegisterPartyCommand;
+import com.firefly.domain.people.core.customer.commands.RegisterNaturalPersonCommand;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -99,6 +103,52 @@ class CustomerServiceImplTest {
                 .verify();
 
         verify(sagaEngine).execute(eq("RegisterCustomerSaga"), any(StepInputs.class));
+    }
+
+    /**
+     * Defect B: a minimal RegisterCustomerCommand with all collection fields left null
+     * (statusHistory, identityDocuments, addresses, emails, phones, economicActivities,
+     * consents, providers, relationships, groupMemberships) must NOT trigger an NPE
+     * when expanding into saga step inputs. The service must defensively default the
+     * lists before calling {@code ExpandEach.of(...)}. This mirrors the Defect-2 fix
+     * applied to {@code LoanOriginationServiceImpl.submitApplication}.
+     */
+    @Test
+    @DisplayName("Should not throw NPE when all optional collections are null")
+    void registerCustomer_doesNotThrowNpe_whenOptionalCollectionsAreNull() {
+        RegisterPartyCommand party = RegisterPartyCommand.builder().build();
+        RegisterNaturalPersonCommand naturalPerson = new RegisterNaturalPersonCommand();
+
+        // All ten collection fields are intentionally null — this is exactly what
+        // the IndividualOnboardingWorkflow.registerParty path posts when the
+        // experience tier carries only party + naturalPerson on the inbound request.
+        RegisterCustomerCommand command = new RegisterCustomerCommand(
+                party,
+                naturalPerson,
+                null, // statusHistory
+                null, // pep
+                null, // identityDocuments
+                null, // addresses
+                null, // emails
+                null, // phones
+                null, // economicActivities
+                null, // consents
+                null, // providers
+                null, // relationships
+                null  // groupMemberships
+        );
+
+        when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
+                .thenReturn(Mono.just(sagaResult));
+
+        StepVerifier.create(service.registerCustomer(command))
+                .expectNext(sagaResult)
+                .verifyComplete();
+
+        ArgumentCaptor<StepInputs> captor = ArgumentCaptor.forClass(StepInputs.class);
+        verify(sagaEngine).execute(eq("RegisterCustomerSaga"), captor.capture());
+        // Reaching this point without an NPE during builder execution proves the fix.
+        assertThat(captor.getValue()).isNotNull();
     }
 
     @Test

@@ -18,6 +18,7 @@ public class RegisterCustomerConstants {
     public static final String SAGA_SET_PREFERRED_CHANNEL_NAME = "SetPreferredChannelSaga";
     public static final String SAGA_ADD_IDENTITY_DOCUMENT_NAME = "AddIdentityDocumentSaga";
     public static final String SAGA_REMOVE_IDENTITY_DOCUMENT_NAME = "RemoveIdentityDocumentSaga";
+    public static final String SAGA_UPDATE_CONSENT_NAME = "UpdateConsentSaga";
     public static final String SAGA_REGISTER_PARTY_RELATIONSHIP = "RegisterPartyRelationshipSaga";
     public static final String SAGA_UPDATE_PARTY_RELATIONSHIP = "UpdatePartyRelationshipSaga";
     public static final String SAGA_REMOVE_PARTY_RELATIONSHIP = "RemovePartyRelationshipSaga";
@@ -47,6 +48,7 @@ public class RegisterCustomerConstants {
     public static final String STEP_UPDATE_CHANNEL = "updateChannel";
     public static final String STEP_UPDATE_STATUS = "updateStatus";
     public static final String STEP_REMOVE_IDENTITY_DOCUMENT = "removeIdentityDocument";
+    public static final String STEP_UPDATE_CONSENT = "updateConsent";
     public static final String STEP_UPDATE_BUSINESS = "updateBusiness";
     public static final String STEP_UPDATE_PARTY_RELATIONSHIP = "updatePartyRelationship";
     public static final String STEP_REMOVE_PARTY_RELATIONSHIP = "removePartyRelationship";
@@ -94,6 +96,7 @@ public class RegisterCustomerConstants {
     public static final String EVENT_PREFERRED_CHANNEL_UPDATED = "preferredChannel.updated";
     public static final String EVENT_STATUS_UPDATED = "status.updated";
     public static final String EVENT_IDENTITY_DOCUMENT_REMOVED = "identitydocument.removed";
+    public static final String EVENT_CONSENT_UPDATED = "consent.updated";
     public static final String EVENT_PARTY_RELATIONSHIP_UPDATED = "partyrelationship.updated";
     public static final String EVENT_PARTY_RELATIONSHIP_REMOVED = "partyrelationship.removed";
 
