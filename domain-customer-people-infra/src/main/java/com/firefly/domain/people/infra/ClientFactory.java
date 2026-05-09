@@ -1,5 +1,6 @@
 package com.firefly.domain.people.infra;
 
+import com.firefly.common.reference.master.data.sdk.api.ConsentCatalogApi;
 import com.firefly.core.customer.sdk.api.*;
 import com.firefly.core.customer.sdk.invoker.ApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,17 @@ import org.springframework.stereotype.Component;
 public class ClientFactory {
 
     private final ApiClient apiClient;
+    private final com.firefly.common.reference.master.data.sdk.invoker.ApiClient referenceMasterDataApiClient;
 
     @Autowired
     public ClientFactory(
-            CustomerMgmtProperties customerMgmtProperties) {
+            CustomerMgmtProperties customerMgmtProperties,
+            ReferenceMasterDataProperties referenceMasterDataProperties) {
         this.apiClient = new ApiClient();
         this.apiClient.setBasePath(customerMgmtProperties.getBasePath());
+
+        this.referenceMasterDataApiClient = new com.firefly.common.reference.master.data.sdk.invoker.ApiClient();
+        this.referenceMasterDataApiClient.setBasePath(referenceMasterDataProperties.getBasePath());
     }
 
     @Bean
@@ -90,6 +96,11 @@ public class ClientFactory {
     @Bean
     public PartyGroupMembershipsApi partyGroupMembershipsApi() {
         return new PartyGroupMembershipsApi(apiClient);
+    }
+
+    @Bean
+    public ConsentCatalogApi consentCatalogApi() {
+        return new ConsentCatalogApi(referenceMasterDataApiClient);
     }
 
 }
