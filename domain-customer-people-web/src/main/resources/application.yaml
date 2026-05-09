@@ -48,6 +48,8 @@ server:
 api-configuration:
   common-platform.customer-mgmt:
     base-path: ${ENDPOINT_CORE_CUSTOMER_MGMT:http://localhost:8082}
+  common-platform.reference-master-data:
+    base-path: ${ENDPOINT_CORE_REFERENCE_MASTER_DATA:http://localhost:8083}
 
 springdoc:
   api-docs:
