@@ -27,4 +27,19 @@ public class ConsentCatalogQuery implements Query<List<ConsentCatalogResponse>> 
     /** Optional product filter, e.g. {@code PERSONAL_LOAN} or {@code LEASING}. */
     private String applicableProduct;
 
+    /**
+     * The framework's default cache key derives only from the class name + metadata
+     * hash, so two requests with different {@code applicableProduct} values would
+     * collide and the first variant cached would be served forever. Folding the
+     * filter value into the key partitions the cache per product (and ALL for the
+     * unfiltered variant) so each scope keeps its own entry.
+     */
+    @Override
+    public String getCacheKey() {
+        if (!isCacheable()) {
+            return null;
+        }
+        return "ConsentCatalogQuery:" + (applicableProduct == null ? "ALL" : applicableProduct);
+    }
+
 }
