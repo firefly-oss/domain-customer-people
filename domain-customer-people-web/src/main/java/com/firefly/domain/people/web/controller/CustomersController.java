@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -37,11 +39,25 @@ public class CustomersController {
 
 
     @PostMapping
-    @Operation(summary = "Register a customer", description = "Registers a customer")
+    @Operation(summary = "Register a customer", description = "Registers a customer and returns the resulting identifiers")
     public Mono<ResponseEntity<Object>> registerCustomer(@Valid @RequestBody RegisterCustomerCommand command) {
         return customerService.registerCustomer(command)
-                .thenReturn(ResponseEntity.noContent().build());
+                .map(saga -> {
+                    Map<String, Object> body = new HashMap<>();
+                    saga.resultOf("registerParty", UUID.class)
+                            .filter(id -> !ZERO_UUID.equals(id))
+                            .ifPresent(id -> body.put("partyId", id.toString()));
+                    saga.resultOf("registerNaturalPerson", UUID.class)
+                            .filter(id -> !ZERO_UUID.equals(id))
+                            .ifPresent(id -> body.put("naturalPersonId", id.toString()));
+                    saga.resultOf("registerLegalEntity", UUID.class)
+                            .filter(id -> !ZERO_UUID.equals(id))
+                            .ifPresent(id -> body.put("legalEntityId", id.toString()));
+                    return ResponseEntity.ok((Object) body);
+                });
     }
+
+    private static final UUID ZERO_UUID = new UUID(0L, 0L);
 
     @PutMapping
     @Operation(summary = "Update customer", description = "Updates an existing customer")

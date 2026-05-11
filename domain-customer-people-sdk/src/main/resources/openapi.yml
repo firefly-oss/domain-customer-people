@@ -110,7 +110,7 @@ paths:
       tags:
       - Customers
       summary: Register a customer
-      description: Registers a customer
+      description: Registers a customer and returns the resulting identifiers
       operationId: registerCustomer
       parameters:
       - name: X-Idempotency-Key

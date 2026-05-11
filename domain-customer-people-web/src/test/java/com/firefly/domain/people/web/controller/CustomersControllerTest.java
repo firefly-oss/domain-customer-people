@@ -53,10 +53,14 @@ class CustomersControllerTest {
     }
 
     @Test
-    @DisplayName("Should register customer successfully")
-    void testRegisterCustomer_ShouldReturnNoContentResponse() {
+    @DisplayName("Should register customer and return partyId in body")
+    void testRegisterCustomer_ShouldReturnOkResponseWithPartyId() {
         // Given
         RegisterCustomerCommand command = mock(RegisterCustomerCommand.class);
+        UUID partyId = UUID.randomUUID();
+        when(sagaResult.resultOf("registerParty", UUID.class)).thenReturn(java.util.Optional.of(partyId));
+        when(sagaResult.resultOf("registerNaturalPerson", UUID.class)).thenReturn(java.util.Optional.empty());
+        when(sagaResult.resultOf("registerLegalEntity", UUID.class)).thenReturn(java.util.Optional.empty());
         when(customerService.registerCustomer(command))
                 .thenReturn(Mono.just(sagaResult));
 
@@ -65,7 +69,12 @@ class CustomersControllerTest {
 
         // Then
         StepVerifier.create(result)
-                .assertNext(response -> assertEquals(204, response.getStatusCodeValue()))
+                .assertNext(response -> {
+                    assertEquals(200, response.getStatusCodeValue());
+                    @SuppressWarnings("unchecked")
+                    java.util.Map<String, Object> body = (java.util.Map<String, Object>) response.getBody();
+                    assertEquals(partyId.toString(), body.get("partyId"));
+                })
                 .verifyComplete();
 
         verify(customerService).registerCustomer(command);

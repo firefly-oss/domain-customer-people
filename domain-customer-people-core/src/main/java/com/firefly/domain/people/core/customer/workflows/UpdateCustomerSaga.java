@@ -1,7 +1,6 @@
 package com.firefly.domain.people.core.customer.workflows;
 
 import org.fireflyframework.cqrs.command.CommandBus;
-import com.firefly.domain.people.core.business.commands.UpdateBusinessCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import org.fireflyframework.orchestration.saga.annotation.Saga;
 import org.fireflyframework.orchestration.saga.annotation.SagaStep;
@@ -17,15 +16,13 @@ import static com.firefly.domain.people.core.utils.constants.RegisterCustomerCon
 
 
 /**
- * Saga orchestrator for customer registration processes.
- * 
- * This orchestrator manages the distributed transaction for registering customers,
- * coordinating multiple steps including party creation, person details registration,
- * contact information setup, and relationship establishment. Each step is designed
- * to be compensatable to ensure data consistency in case of failures.
- * 
- * The orchestrator handles both natural persons and legal entities, with conditional
- * logic to process only relevant information based on the customer type.
+ * Saga orchestrator for customer (natural person) update flows.
+ *
+ * Coordinates the single-step update of an existing natural person attached to a party.
+ * Wrapping the call in a saga keeps the contract symmetric with RegisterCustomerSaga
+ * and leaves room for additional compensatable steps (contact data, status entries, etc.)
+ * without changing the public API. The legal-entity counterpart is handled by
+ * {@link com.firefly.domain.people.core.business.workflows.UpdateBusinessSaga}.
  */
 @Saga(name = SAGA_UPDATE_CUSTOMER_SAGA)
 @Service
@@ -40,7 +37,7 @@ public class UpdateCustomerSaga {
 
     @SagaStep(id = STEP_UPDATE_CUSTOMER)
     @StepEvent(type = EVENT_CUSTOMER_CHANGED)
-    public Mono<UUID> updateBusiness(UpdateBusinessCommand cmd, ExecutionContext ctx) {
+    public Mono<UUID> updateCustomer(UpdateCustomerCommand cmd, ExecutionContext ctx) {
         return commandBus.send(cmd);
     }
 

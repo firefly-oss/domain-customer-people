@@ -51,6 +51,7 @@ class CustomerServiceImplTest {
     void testRegisterCustomer_ShouldExecuteSaga() {
         // Given
         RegisterCustomerCommand command = mock(RegisterCustomerCommand.class);
+        when(sagaResult.isSuccess()).thenReturn(true);
         when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
@@ -70,6 +71,7 @@ class CustomerServiceImplTest {
     void testUpdateCustomer_ShouldExecuteSaga() {
         // Given
         UpdateCustomerCommand command = mock(UpdateCustomerCommand.class);
+        when(sagaResult.isSuccess()).thenReturn(true);
         when(sagaEngine.execute(eq("UpdateCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
@@ -82,6 +84,24 @@ class CustomerServiceImplTest {
                 .verifyComplete();
 
         verify(sagaEngine).execute(eq("UpdateCustomerSaga"), any(StepInputs.class));
+    }
+
+    @Test
+    @DisplayName("Should propagate saga failure as a reactive error")
+    void testRegisterCustomer_ShouldPropagateSagaFailure() {
+        // Given a saga that completes but reports isSuccess=false (dead-lettered step).
+        // Without explicit propagation, the controller would return 200 with no body,
+        // masking the failure to BFF callers.
+        RegisterCustomerCommand command = mock(RegisterCustomerCommand.class);
+        RuntimeException sagaError = new RuntimeException("registerParty failed");
+        when(sagaResult.isSuccess()).thenReturn(false);
+        when(sagaResult.error()).thenReturn(java.util.Optional.of(sagaError));
+        when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
+                .thenReturn(Mono.just(sagaResult));
+
+        StepVerifier.create(service.registerCustomer(command))
+                .expectErrorMatches(thrown -> thrown == sagaError)
+                .verify();
     }
 
 
@@ -138,6 +158,7 @@ class CustomerServiceImplTest {
                 null  // groupMemberships
         );
 
+        when(sagaResult.isSuccess()).thenReturn(true);
         when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 
@@ -161,6 +182,7 @@ class CustomerServiceImplTest {
         assertNotNull(newService);
         // We can't directly access the private field, but we can verify it works by calling a method
         RegisterCustomerCommand command = mock(RegisterCustomerCommand.class);
+        when(sagaResult.isSuccess()).thenReturn(true);
         when(sagaEngine.execute(eq("RegisterCustomerSaga"), any(StepInputs.class)))
                 .thenReturn(Mono.just(sagaResult));
 

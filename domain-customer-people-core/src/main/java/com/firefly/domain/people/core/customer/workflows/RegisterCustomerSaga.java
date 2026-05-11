@@ -53,11 +53,22 @@ import static com.firefly.domain.people.core.utils.constants.RegisterCustomerCon
 @Service
 public class RegisterCustomerSaga {
 
+    // The framework treats a @SagaStep that emits Mono.empty() as a step FAILURE, which
+    // dead-letters the saga even when the step intentionally has no work to do. For optional
+    // branches (e.g. natural-person-only flows that have no legal entity, no PEP and no
+    // consents) we emit this sentinel UUID instead so the step counts as "success – nothing
+    // produced". Compensation methods skip it.
+    private static final UUID SKIPPED_STEP_SENTINEL = new UUID(0L, 0L);
+
     private final CommandBus commandBus;
 
     @Autowired
     public RegisterCustomerSaga(CommandBus commandBus) {
         this.commandBus = commandBus;
+    }
+
+    private static boolean isSkipped(UUID id) {
+        return id == null || SKIPPED_STEP_SENTINEL.equals(id);
     }
 
     @SagaStep(id = STEP_REGISTER_PARTY, compensate = COMPENSATE_REMOVE_PARTY)
@@ -75,12 +86,12 @@ public class RegisterCustomerSaga {
     @StepEvent(type = EVENT_NATURAL_PERSON_REGISTERED)
     public Mono<UUID> registerNaturalPerson(RegisterNaturalPersonCommand cmd, ExecutionContext ctx) {
         return cmd == null
-                ? Mono.empty()
+                ? Mono.just(SKIPPED_STEP_SENTINEL)
                 : commandBus.send(cmd.withPartyId((UUID) ctx.getVariable(CTX_PARTY_ID)));
     }
 
     public Mono<Void> removeNaturalPerson(UUID naturalPersonId, ExecutionContext ctx) {
-        return naturalPersonId == null
+        return isSkipped(naturalPersonId)
                 ? Mono.empty()
                 : commandBus.send(new RemoveNaturalPersonCommand((UUID) ctx.getVariable(CTX_PARTY_ID), naturalPersonId));
     }
@@ -89,12 +100,12 @@ public class RegisterCustomerSaga {
     @StepEvent(type = EVENT_LEGAL_ENTITY_REGISTERED)
     public Mono<UUID> registerLegalEntity(RegisterLegalEntityCommand cmd, ExecutionContext ctx) {
         return cmd == null
-                ? Mono.empty()
+                ? Mono.just(SKIPPED_STEP_SENTINEL)
                 : commandBus.send(cmd.withPartyId((UUID) ctx.getVariable(CTX_PARTY_ID)));
     }
 
     public Mono<Void> removeLegalEntity(UUID legalEntityId, ExecutionContext ctx) {
-        return legalEntityId == null
+        return isSkipped(legalEntityId)
                 ? Mono.empty()
                 : commandBus.send(new RemoveLegalEntityCommand((UUID) ctx.getVariable(CTX_PARTY_ID), legalEntityId));
     }
@@ -113,12 +124,12 @@ public class RegisterCustomerSaga {
     @StepEvent(type = EVENT_PEP_REGISTERED)
     public Mono<UUID> registerPep(RegisterPepCommand cmd, ExecutionContext ctx) {
         return cmd == null
-                ? Mono.empty()
+                ? Mono.just(SKIPPED_STEP_SENTINEL)
                 : commandBus.send(cmd.withPartyId((UUID) ctx.getVariable(CTX_PARTY_ID)));
     }
 
     public Mono<Void> removePep(UUID pepId, ExecutionContext ctx) {
-        return pepId == null
+        return isSkipped(pepId)
                 ? Mono.empty()
                 : commandBus.send(new RemovePepCommand((UUID) ctx.getVariable(CTX_PARTY_ID), pepId));
     }
@@ -177,12 +188,12 @@ public class RegisterCustomerSaga {
     @StepEvent(type = EVENT_CONSENT_REGISTERED)
     public Mono<UUID> registerConsent(RegisterConsentCommand cmd, ExecutionContext ctx) {
         return cmd == null
-                ? Mono.empty()
+                ? Mono.just(SKIPPED_STEP_SENTINEL)
                 : commandBus.send(cmd.withPartyId((UUID) ctx.getVariable(CTX_PARTY_ID)));
     }
 
     public Mono<Void> removeConsent(UUID consentId, ExecutionContext ctx) {
-        return consentId == null
+        return isSkipped(consentId)
                 ? Mono.empty()
                 : commandBus.send(new RemoveConsentCommand((UUID) ctx.getVariable(CTX_PARTY_ID), consentId));
     }

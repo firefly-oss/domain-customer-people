@@ -54,7 +54,8 @@ public class CustomerServiceImpl implements CustomerService {
                 .forStepId("registerPartyGroupMembership", ExpandEach.of(nullSafe(command.groupMemberships())))
                 .build();
 
-        return engine.execute("RegisterCustomerSaga", inputs);
+        return engine.execute("RegisterCustomerSaga", inputs)
+                .flatMap(CustomerServiceImpl::failOnSagaError);
     }
 
     private static <T> List<T> nullSafe(List<T> list) {
@@ -67,11 +68,26 @@ public class CustomerServiceImpl implements CustomerService {
                 .forStepId("updateCustomer", command)
                 .build();
 
-        return engine.execute("UpdateCustomerSaga", inputs);
+        return engine.execute("UpdateCustomerSaga", inputs)
+                .flatMap(CustomerServiceImpl::failOnSagaError);
     }
 
     @Override
     public Mono<NaturalPersonDTO> getCustomerInfo(UUID customerId) {
         return queryBus.query(NaturalPersonQuery.builder().partyId(customerId).build());
+    }
+
+    // Translate a failed saga result into a reactive error so HTTP callers see a real
+    // failure (5xx) instead of a 200 with no body. Without this, dead-lettered sagas
+    // bubble up as silent successes and downstream consumers (BFF workflows, channel
+    // apps) cannot react to the failure.
+    private static Mono<SagaResult> failOnSagaError(SagaResult result) {
+        if (result.isSuccess()) {
+            return Mono.just(result);
+        }
+        Throwable cause = result.error().orElseGet(() -> new IllegalStateException(
+                "Saga " + result.sagaName() + " failed at step "
+                        + result.firstErrorStepId().orElse("<unknown>")));
+        return Mono.error(cause);
     }
 }
