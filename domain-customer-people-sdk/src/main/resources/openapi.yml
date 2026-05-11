@@ -1750,6 +1750,30 @@ components:
         numberOfChildren:
           type: integer
           format: int32
+        employmentStatus:
+          type: string
+        employmentType:
+          type: string
+        employer:
+          type: string
+        employmentStartDate:
+          type: string
+          format: date
+        annualPaydays:
+          type: integer
+          format: int32
+        housingType:
+          type: string
+        housingCost:
+          type: number
+        housingStartDate:
+          type: string
+          format: date
+        existingLoans:
+          type: integer
+          format: int32
+        otherDebts:
+          type: number
         createdAt:
           type: string
           format: date-time
@@ -2283,6 +2307,30 @@ components:
         numberOfChildren:
           type: integer
           format: int32
+        employmentStatus:
+          type: string
+        employmentType:
+          type: string
+        employer:
+          type: string
+        employmentStartDate:
+          type: string
+          format: date
+        annualPaydays:
+          type: integer
+          format: int32
+        housingType:
+          type: string
+        housingCost:
+          type: number
+        housingStartDate:
+          type: string
+          format: date
+        existingLoans:
+          type: integer
+          format: int32
+        otherDebts:
+          type: number
         createdAt:
           type: string
           format: date-time
@@ -2773,6 +2821,30 @@ components:
         numberOfChildren:
           type: integer
           format: int32
+        employmentStatus:
+          type: string
+        employmentType:
+          type: string
+        employer:
+          type: string
+        employmentStartDate:
+          type: string
+          format: date
+        annualPaydays:
+          type: integer
+          format: int32
+        housingType:
+          type: string
+        housingCost:
+          type: number
+        housingStartDate:
+          type: string
+          format: date
+        existingLoans:
+          type: integer
+          format: int32
+        otherDebts:
+          type: number
         createdAt:
           type: string
           format: date-time
