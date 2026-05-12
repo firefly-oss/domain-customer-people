@@ -446,7 +446,7 @@ paths:
       tags:
       - Businesses
       summary: Register a business
-      description: Registers a business
+      description: Registers a business and returns the resulting identifiers
       operationId: registerBusiness
       parameters:
       - name: X-Idempotency-Key
