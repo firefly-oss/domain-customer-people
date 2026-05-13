@@ -1,7 +1,9 @@
 package com.firefly.domain.people.web.controller;
 
+import com.firefly.core.customer.sdk.model.FilterRequestPartyDTO;
 import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import com.firefly.core.customer.sdk.model.PartyStatusDTO;
+import com.firefly.domain.people.core.customer.dto.CustomerSearchResultDTO;
 import com.firefly.domain.people.core.compliance.commands.UpdateConsentCommand;
 import com.firefly.domain.people.core.compliance.services.ConsentService;
 import com.firefly.domain.people.core.contact.commands.*;
@@ -86,6 +88,22 @@ public class CustomersController {
     public Mono<ResponseEntity<CustomerFinancialProfileDTO>> getCustomerFinancialProfile(
             @PathVariable("partyId") UUID partyId) {
         return customerService.getFinancialProfile(partyId)
+                .map(ResponseEntity::ok);
+    }
+
+    @Operation(
+            summary = "Search customers",
+            description = "Proxies POST /api/v1/parties/filter on core-common-customer-mgmt "
+                    + "and enriches each matching party with its associated natural-person "
+                    + "(INDIVIDUAL) or legal-entity (ORGANIZATION) record. The response is a "
+                    + "paginated list of EnrichedPartyDTO with the bare party plus exactly one "
+                    + "of the two association fields populated. A failed enrichment lookup is "
+                    + "logged and returns the row with only the bare party."
+    )
+    @PostMapping("/search")
+    public Mono<ResponseEntity<CustomerSearchResultDTO>> searchCustomers(
+            @RequestBody FilterRequestPartyDTO filterRequest) {
+        return customerService.filterCustomers(filterRequest)
                 .map(ResponseEntity::ok);
     }
 

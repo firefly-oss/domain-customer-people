@@ -1,9 +1,11 @@
 package com.firefly.domain.people.core.customer.services;
 
+import com.firefly.core.customer.sdk.model.FilterRequestPartyDTO;
 import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
 import com.firefly.domain.people.core.customer.dto.CustomerFinancialProfileDTO;
+import com.firefly.domain.people.core.customer.dto.CustomerSearchResultDTO;
 import org.fireflyframework.orchestration.saga.engine.SagaResult;
 import reactor.core.publisher.Mono;
 
@@ -45,4 +47,18 @@ public interface CustomerService {
      * @return the populated financial profile
      */
     Mono<CustomerFinancialProfileDTO> getFinancialProfile(UUID partyId);
+
+    /**
+     * Searches the customer-mgmt party catalog using a filter request and
+     * enriches each matching party with its associated natural-person or
+     * legal-entity record (chosen by {@code party.partyKind}).
+     *
+     * <p>Proxies POST /api/v1/parties/filter on core-common-customer-mgmt
+     * and fans out per-row lookups in parallel. A failed enrichment lookup
+     * is logged and the row is returned with the bare party only.</p>
+     *
+     * @param filterRequest the filter, range and pagination criteria
+     * @return a paginated list of enriched parties
+     */
+    Mono<CustomerSearchResultDTO> filterCustomers(FilterRequestPartyDTO filterRequest);
 }

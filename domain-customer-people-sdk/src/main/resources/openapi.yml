@@ -1082,6 +1082,39 @@ paths:
             '*/*':
               schema:
                 type: object
+  /api/v1/customers/search:
+    post:
+      tags:
+      - Customers
+      summary: Search customers
+      description: Proxies POST /api/v1/parties/filter on core-common-customer-mgmt
+        and enriches each matching party with its associated natural-person (INDIVIDUAL)
+        or legal-entity (ORGANIZATION) record. The response is a paginated list of
+        EnrichedPartyDTO with the bare party plus exactly one of the two association
+        fields populated. A failed enrichment lookup is logged and returns the row
+        with only the bare party.
+      operationId: searchCustomers
+      parameters:
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FilterRequestPartyDTO"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CustomerSearchResultDTO"
   /api/v1/businesses/{partyId}/unlock:
     post:
       tags:
@@ -2573,6 +2606,258 @@ components:
         partyId:
           type: string
           format: uuid
+    FilterOptions:
+      type: object
+      properties:
+        caseInsensitiveStrings:
+          type: boolean
+        includeInheritedFields:
+          type: boolean
+    FilterRequestPartyDTO:
+      required:
+      - pagination
+      type: object
+      properties:
+        filters:
+          $ref: "#/components/schemas/PartyDTO"
+        rangeFilters:
+          $ref: "#/components/schemas/RangeFilter"
+        pagination:
+          $ref: "#/components/schemas/PaginationRequest"
+        options:
+          $ref: "#/components/schemas/FilterOptions"
+    PaginationRequest:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        sortBy:
+          type: string
+        sortDirection:
+          type: string
+    PartyDTO:
+      required:
+      - partyKind
+      - tenantId
+      type: object
+      properties:
+        partyId:
+          type: string
+          format: uuid
+        partyKind:
+          type: string
+          enum:
+          - INDIVIDUAL
+          - ORGANIZATION
+        tenantId:
+          type: string
+          format: uuid
+        preferredLanguage:
+          type: string
+        sourceSystem:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RangeFilter:
+      type: object
+      properties:
+        ranges:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/RangeObject"
+    RangeObject:
+      type: object
+      properties:
+        from:
+          type: object
+        to:
+          type: object
+    CustomerSearchResultDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/EnrichedPartyDTO"
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+    EnrichedPartyDTO:
+      type: object
+      properties:
+        party:
+          $ref: "#/components/schemas/PartyDTO"
+        naturalPerson:
+          $ref: "#/components/schemas/NaturalPersonDTO"
+        legalEntity:
+          $ref: "#/components/schemas/LegalEntityDTO"
+    LegalEntityDTO:
+      required:
+      - legalName
+      - partyId
+      type: object
+      properties:
+        legalEntityId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        legalName:
+          type: string
+        tradeName:
+          type: string
+        registrationNumber:
+          type: string
+        taxIdNumber:
+          type: string
+        legalFormId:
+          type: string
+          format: uuid
+        incorporationDate:
+          type: string
+          format: date
+        industryDescription:
+          type: string
+        headcount:
+          type: integer
+          format: int64
+        shareCapital:
+          type: number
+        websiteUrl:
+          type: string
+        incorporationCountryId:
+          type: string
+          format: uuid
+        employeeRange:
+          type: string
+        annualRevenue:
+          type: number
+        cnaeCode:
+          type: string
+        contactName:
+          type: string
+        contactPosition:
+          type: string
+        contactEmail:
+          type: string
+        contactPhone:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    NaturalPersonDTO:
+      required:
+      - familyName1
+      - givenName
+      - partyId
+      type: object
+      properties:
+        naturalPersonId:
+          type: string
+          format: uuid
+        partyId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        givenName:
+          type: string
+        middleName:
+          type: string
+        familyName1:
+          type: string
+        familyName2:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        birthPlace:
+          type: string
+        birthCountryId:
+          type: string
+          format: uuid
+        nationalityCountryId:
+          type: string
+          format: uuid
+        gender:
+          type: string
+          enum:
+          - MALE
+          - FEMALE
+          - NON_BINARY
+          - UNSPECIFIED
+        maritalStatus:
+          type: string
+          enum:
+          - SINGLE
+          - MARRIED
+          - SEPARATED
+          - DIVORCED
+          - WIDOWED
+        taxIdNumber:
+          type: string
+        residencyStatus:
+          type: string
+          enum:
+          - RESIDENT
+          - NON_RESIDENT
+        occupation:
+          type: string
+        monthlyIncome:
+          type: number
+        suffix:
+          type: string
+        numberOfChildren:
+          type: integer
+          format: int32
+        employmentStatus:
+          type: string
+        employmentType:
+          type: string
+        employer:
+          type: string
+        employmentStartDate:
+          type: string
+          format: date
+        annualPaydays:
+          type: integer
+          format: int32
+        housingType:
+          type: string
+        housingCost:
+          type: number
+        housingStartDate:
+          type: string
+          format: date
+        existingLoans:
+          type: integer
+          format: int32
+        otherDebts:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
     RegisterBusinessCommand:
       type: object
       properties:
@@ -3257,101 +3542,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    NaturalPersonDTO:
-      required:
-      - familyName1
-      - givenName
-      - partyId
-      type: object
-      properties:
-        naturalPersonId:
-          type: string
-          format: uuid
-        partyId:
-          type: string
-          format: uuid
-        title:
-          type: string
-        givenName:
-          type: string
-        middleName:
-          type: string
-        familyName1:
-          type: string
-        familyName2:
-          type: string
-        dateOfBirth:
-          type: string
-          format: date
-        birthPlace:
-          type: string
-        birthCountryId:
-          type: string
-          format: uuid
-        nationalityCountryId:
-          type: string
-          format: uuid
-        gender:
-          type: string
-          enum:
-          - MALE
-          - FEMALE
-          - NON_BINARY
-          - UNSPECIFIED
-        maritalStatus:
-          type: string
-          enum:
-          - SINGLE
-          - MARRIED
-          - SEPARATED
-          - DIVORCED
-          - WIDOWED
-        taxIdNumber:
-          type: string
-        residencyStatus:
-          type: string
-          enum:
-          - RESIDENT
-          - NON_RESIDENT
-        occupation:
-          type: string
-        monthlyIncome:
-          type: number
-        suffix:
-          type: string
-        numberOfChildren:
-          type: integer
-          format: int32
-        employmentStatus:
-          type: string
-        employmentType:
-          type: string
-        employer:
-          type: string
-        employmentStartDate:
-          type: string
-          format: date
-        annualPaydays:
-          type: integer
-          format: int32
-        housingType:
-          type: string
-        housingCost:
-          type: number
-        housingStartDate:
-          type: string
-          format: date
-        existingLoans:
-          type: integer
-          format: int32
-        otherDebts:
-          type: number
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
     ConsentCatalogResponse:
       type: object
       properties:
@@ -3371,61 +3561,3 @@ components:
           format: int32
         applicableProduct:
           type: string
-    LegalEntityDTO:
-      required:
-      - legalName
-      - partyId
-      type: object
-      properties:
-        legalEntityId:
-          type: string
-          format: uuid
-        partyId:
-          type: string
-          format: uuid
-        legalName:
-          type: string
-        tradeName:
-          type: string
-        registrationNumber:
-          type: string
-        taxIdNumber:
-          type: string
-        legalFormId:
-          type: string
-          format: uuid
-        incorporationDate:
-          type: string
-          format: date
-        industryDescription:
-          type: string
-        headcount:
-          type: integer
-          format: int64
-        shareCapital:
-          type: number
-        websiteUrl:
-          type: string
-        incorporationCountryId:
-          type: string
-          format: uuid
-        employeeRange:
-          type: string
-        annualRevenue:
-          type: number
-        cnaeCode:
-          type: string
-        contactName:
-          type: string
-        contactPosition:
-          type: string
-        contactEmail:
-          type: string
-        contactPhone:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
