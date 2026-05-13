@@ -17,4 +17,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PartyIdentityDocumentsQuery extends PaginationResponse implements Query<PaginationResponse> {
     private UUID partyId;
+
+    @Override
+    public String getCacheKey() {
+        if (!isCacheable()) {
+            return null;
+        }
+        return "PartyIdentityDocumentsQuery:" + getPartyId();
+    }
 }

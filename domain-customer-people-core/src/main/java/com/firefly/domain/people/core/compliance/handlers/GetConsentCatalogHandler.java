@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.fireflyframework.cqrs.annotations.QueryHandlerComponent;
 import org.fireflyframework.cqrs.query.QueryHandler;
+import org.fireflyframework.web.error.exceptions.BusinessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -43,6 +46,10 @@ public class GetConsentCatalogHandler
         log.debug("Fetching consent catalogue for applicableProduct={}", query.getApplicableProduct());
         return consentCatalogApi
                 .listConsentCatalog(0, CATALOG_PAGE_SIZE, null, null, UUID.randomUUID().toString())
+                .onErrorMap(WebClientRequestException.class, ex -> new BusinessException(
+                        HttpStatus.SERVICE_UNAVAILABLE,
+                        "CONSENT_CATALOG_UNAVAILABLE",
+                        "Consent catalog service unavailable: " + ex.getMessage()))
                 .flatMapMany(this::extractContent)
                 .filter(dto -> dto.getStatus() == ConsentCatalogDTO.StatusEnum.ACTIVE)
                 .filter(dto -> matchesProduct(dto, query.getApplicableProduct()))

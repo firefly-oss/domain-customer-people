@@ -14,4 +14,11 @@ import java.util.UUID;
 public class NaturalPersonQuery extends NaturalPersonDTO implements Query<NaturalPersonDTO> {
     private UUID partyId;
 
+    @Override
+    public String getCacheKey() {
+        if (!isCacheable()) {
+            return null;
+        }
+        return "NaturalPersonQuery:" + getPartyId();
+    }
 }

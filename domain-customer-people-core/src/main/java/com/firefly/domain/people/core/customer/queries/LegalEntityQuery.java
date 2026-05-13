@@ -14,4 +14,11 @@ import java.util.UUID;
 public class LegalEntityQuery extends LegalEntityDTO implements Query<LegalEntityDTO> {
     private UUID partyId;
 
+    @Override
+    public String getCacheKey() {
+        if (!isCacheable()) {
+            return null;
+        }
+        return "LegalEntityQuery:" + getPartyId();
+    }
 }

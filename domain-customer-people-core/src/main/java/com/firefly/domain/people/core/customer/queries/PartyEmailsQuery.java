@@ -17,4 +17,12 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PartyEmailsQuery extends PaginationResponseEmailContactDTO implements Query<PaginationResponseEmailContactDTO> {
     private UUID partyId;
+
+    @Override
+    public String getCacheKey() {
+        if (!isCacheable()) {
+            return null;
+        }
+        return "PartyEmailsQuery:" + getPartyId();
+    }
 }
