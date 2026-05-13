@@ -75,6 +75,33 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Financial profile aggregation SDKs -->
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-common-contract-mgmt-sdk</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-loan-origination-sdk</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-loan-servicing-sdk</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-personal-loans-sdk</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-asset-finance-sdk</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

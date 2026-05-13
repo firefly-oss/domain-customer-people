@@ -34,6 +34,28 @@
             <artifactId>core-common-reference-master-data-sdk</artifactId>
         </dependency>
 
+        <!-- Financial profile aggregation SDKs -->
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-common-contract-mgmt-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-loan-origination-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-loan-servicing-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-personal-loans-sdk</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.firefly</groupId>
+            <artifactId>core-lending-asset-finance-sdk</artifactId>
+        </dependency>
+
         <!-- Common Libraries -->
         <dependency>
             <groupId>org.fireflyframework</groupId>

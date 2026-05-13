@@ -1525,6 +1525,37 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/PaginationResponse"
+  /api/v1/customers/{partyId}/financial-profile:
+    get:
+      tags:
+      - Customers
+      summary: Get customer financial profile
+      description: "Aggregates the party's contracts, loan applications, servicing\
+        \ cases, personal-loan agreements and supply-chain finance agreements across\
+        \ the core lending and contract services. Empty sections are returned as empty\
+        \ lists when the party has no rows in the underlying table."
+      operationId: getCustomerFinancialProfile
+      parameters:
+      - name: partyId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: X-Idempotency-Key
+        in: header
+        description: "Unique key for idempotent requests. If provided, ensures that\
+          \ identical requests with the same key will only be processed once."
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CustomerFinancialProfileDTO"
   /api/v1/customers/{customerId}:
     get:
       tags:
@@ -2756,6 +2787,476 @@ components:
         currentPage:
           type: integer
           format: int32
+    AssetFinanceAgreementDTO:
+      required:
+      - agreementStatus
+      - endDate
+      - financeType
+      - paymentFrequency
+      - startDate
+      - totalValue
+      type: object
+      properties:
+        assetFinanceAgreementId:
+          type: string
+          format: uuid
+        loanServicingCaseId:
+          type: string
+          format: uuid
+        financeType:
+          type: string
+          enum:
+          - RENTING
+          - LEASING
+        agreementStatus:
+          type: string
+          enum:
+          - ACTIVE
+          - SUSPENDED
+          - CLOSED
+          - TERMINATED
+          - DEFAULTED
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        totalValue:
+          type: number
+        paymentFrequency:
+          type: string
+        servicesIncluded:
+          type: boolean
+        depositAmount:
+          type: number
+        earlyTerminationFee:
+          type: number
+        residualValue:
+          type: number
+        purchaseOptionAvailable:
+          type: boolean
+        purchaseOptionPrice:
+          type: number
+        remarks:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ContractDTO:
+      required:
+      - contractStatus
+      type: object
+      properties:
+        contractId:
+          type: string
+          format: uuid
+        contractNumber:
+          type: string
+        contractStatus:
+          type: string
+          enum:
+          - DRAFT
+          - PENDING_APPROVAL
+          - ACTIVE
+          - SUSPENDED
+          - TERMINATED
+          - EXPIRED
+          - CANCELLED
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        productCatalogId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CustomerFinancialProfileDTO:
+      type: object
+      properties:
+        partyId:
+          type: string
+          format: uuid
+        contracts:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContractDTO"
+        loanApplications:
+          type: array
+          items:
+            $ref: "#/components/schemas/LoanApplicationDTO"
+        loanServicingCases:
+          type: array
+          items:
+            $ref: "#/components/schemas/LoanServicingCaseDTO"
+        personalLoanAgreements:
+          type: array
+          items:
+            $ref: "#/components/schemas/PersonalLoanAgreementDTO"
+        assetFinanceAgreements:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetFinanceAgreementDTO"
+    LoanApplicationDTO:
+      required:
+      - applicationDate
+      - applicationStatusId
+      - applicationSubStatusId
+      - submissionChannelId
+      type: object
+      properties:
+        loanApplicationId:
+          type: string
+          format: uuid
+        applicationNumber:
+          type: string
+          format: uuid
+        applicationStatusId:
+          type: string
+          format: uuid
+        applicationSubStatusId:
+          type: string
+          format: uuid
+        applicationDate:
+          type: string
+          format: date
+        submissionChannelId:
+          type: string
+          format: uuid
+        distributorId:
+          type: string
+          format: uuid
+        distributorAgencyId:
+          type: string
+          format: uuid
+        distributorAgentId:
+          type: string
+          format: uuid
+        businessUnit:
+          type: string
+        branchId:
+          type: string
+          format: uuid
+        loanPurpose:
+          type: string
+        loanPurposeDescription:
+          type: string
+        submittedAt:
+          type: string
+          format: date-time
+        firstReviewAt:
+          type: string
+          format: date-time
+        decisionDueDate:
+          type: string
+          format: date
+        expectedClosingDate:
+          type: string
+          format: date
+        loanOfficerId:
+          type: string
+          format: uuid
+        assignedAt:
+          type: string
+          format: date-time
+        isRush:
+          type: boolean
+        isException:
+          type: boolean
+        requiresManualReview:
+          type: boolean
+        externalReferenceNumber:
+          type: string
+        sourceSystem:
+          type: string
+        disbursementMethodType:
+          type: string
+          enum:
+          - INTERNAL_ACCOUNT
+          - EXTERNAL_ACCOUNT
+        disbursementInternalAccountId:
+          type: string
+          format: uuid
+        disbursementExternalBankAccountId:
+          type: string
+          format: uuid
+        paymentCollectionMethodType:
+          type: string
+          enum:
+          - INTERNAL_ACCOUNT
+          - EXTERNAL_ACCOUNT
+        paymentCollectionInternalAccountId:
+          type: string
+          format: uuid
+        paymentCollectionExternalBankAccountId:
+          type: string
+          format: uuid
+        note:
+          type: string
+        simulationId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    LoanServicingCaseDTO:
+      required:
+      - amortizationMethod
+      - applicationId
+      - compoundingFrequency
+      - contractId
+      - dayCountConvention
+      - interestCalculationMethod
+      - interestRate
+      - loanTerm
+      - maturityDate
+      - originationDate
+      - paymentFrequency
+      - principalAmount
+      - productCatalogId
+      - productId
+      - servicingStatus
+      type: object
+      properties:
+        loanServicingCaseId:
+          type: string
+          format: uuid
+        contractId:
+          type: string
+          format: uuid
+        productId:
+          type: string
+          format: uuid
+        applicationId:
+          type: string
+          format: uuid
+        proposedOfferId:
+          type: string
+          format: uuid
+        productCatalogId:
+          type: string
+          format: uuid
+        servicingStatus:
+          type: string
+          enum:
+          - PENDING
+          - ACTIVE
+          - GRACE_PERIOD
+          - DELINQUENT
+          - DEFAULT
+          - FORBEARANCE
+          - RESTRUCTURED
+          - BANKRUPTCY
+          - FORECLOSURE
+          - CHARGED_OFF
+          - PAID_OFF
+          - CLOSED
+          - TRANSFERRED
+          - CANCELLED
+        principalAmount:
+          type: number
+        interestRate:
+          type: number
+        loanTerm:
+          type: integer
+          format: int32
+        interestCalculationMethod:
+          type: string
+          enum:
+          - SIMPLE
+          - COMPOUND
+          - ACTUARIAL
+          - REDUCING_BALANCE
+          - FLAT_RATE
+        amortizationMethod:
+          type: string
+          enum:
+          - EQUAL_INSTALLMENT
+          - EQUAL_PRINCIPAL
+          - BALLOON_PAYMENT
+          - INTEREST_ONLY
+          - BULLET
+        paymentFrequency:
+          type: string
+          enum:
+          - DAILY
+          - WEEKLY
+          - BIWEEKLY
+          - SEMIMONTHLY
+          - MONTHLY
+          - BIMONTHLY
+          - QUARTERLY
+          - SEMIANNUALLY
+          - ANNUALLY
+        compoundingFrequency:
+          type: string
+          enum:
+          - DAILY
+          - MONTHLY
+          - QUARTERLY
+          - SEMIANNUALLY
+          - ANNUALLY
+          - CONTINUOUS
+        dayCountConvention:
+          type: string
+          enum:
+          - ACTUAL_360
+          - ACTUAL_365
+          - ACTUAL_ACTUAL
+          - THIRTY_360
+        originationDate:
+          type: string
+          format: date
+        maturityDate:
+          type: string
+          format: date
+        remarks:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PersonalLoanAgreementDTO:
+      required:
+      - agreementStatus
+      - applicationId
+      - loanPurpose
+      - rateType
+      type: object
+      properties:
+        personalLoanAgreementId:
+          type: string
+          format: uuid
+        applicationId:
+          type: string
+          format: uuid
+        servicingCaseId:
+          type: string
+          format: uuid
+        proposedOfferId:
+          type: string
+          format: uuid
+        agreementStatus:
+          type: string
+          enum:
+          - DRAFT
+          - ACTIVE
+          - SUSPENDED
+          - CLOSED
+          - CANCELLED
+        loanPurpose:
+          type: string
+          enum:
+          - GENERAL_PURPOSE
+          - DEBT_CONSOLIDATION
+          - HOME_IMPROVEMENT
+          - MAJOR_PURCHASE
+          - MEDICAL_EXPENSE
+          - EDUCATION
+          - OTHER
+        purposeDescription:
+          type: string
+        rateType:
+          type: string
+          enum:
+          - FIXED
+          - VARIABLE
+          - HYBRID
+        interestRate:
+          type: number
+        referenceRate:
+          type: string
+        marginRate:
+          type: number
+        fixedRatePeriodMonths:
+          type: integer
+          format: int32
+        rateCap:
+          type: number
+        rateFloor:
+          type: number
+        isUnsecured:
+          type: boolean
+        guarantorRequired:
+          type: boolean
+        insuranceType:
+          type: string
+          enum:
+          - NONE
+          - PAYMENT_PROTECTION
+          - LIFE
+          - DISABILITY
+          - UNEMPLOYMENT
+          - COMPREHENSIVE
+        insurancePremiumRate:
+          type: number
+        insuranceProvider:
+          type: string
+        insurancePolicyNumber:
+          type: string
+        earlyRepaymentPenaltyType:
+          type: string
+          enum:
+          - NONE
+          - FIXED_FEE
+          - PERCENTAGE
+          - SLIDING_SCALE
+        earlyRepaymentPenaltyRate:
+          type: number
+        earlyRepaymentPenaltyPeriodMonths:
+          type: integer
+          format: int32
+        allowsPartialPrepayment:
+          type: boolean
+        partialPrepaymentMinAmount:
+          type: number
+        originationFeeRate:
+          type: number
+        originationFeeAmount:
+          type: number
+        coolingOffPeriodDays:
+          type: integer
+          format: int32
+        maxDeferralCount:
+          type: integer
+          format: int32
+        deferralPeriodMonths:
+          type: integer
+          format: int32
+        agreementSignedDate:
+          type: string
+          format: date
+        agreementEffectiveDate:
+          type: string
+          format: date
+        createdBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
     NaturalPersonDTO:
       required:
       - familyName1

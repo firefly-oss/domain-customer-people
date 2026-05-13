@@ -8,6 +8,7 @@ import com.firefly.domain.people.core.contact.commands.*;
 import com.firefly.domain.people.core.contact.services.ContactService;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
+import com.firefly.domain.people.core.customer.dto.CustomerFinancialProfileDTO;
 import com.firefly.domain.people.core.customer.services.CustomerService;
 import com.firefly.domain.people.core.status.commands.UpdateStatusCommand;
 import com.firefly.domain.people.core.status.services.StatusService;
@@ -71,6 +72,20 @@ public class CustomersController {
     @GetMapping("/{customerId}")
     public Mono<ResponseEntity<NaturalPersonDTO>> getCustomerInfo(@PathVariable UUID customerId) {
         return customerService.getCustomerInfo(customerId)
+                .map(ResponseEntity::ok);
+    }
+
+    @Operation(
+            summary = "Get customer financial profile",
+            description = "Aggregates the party's contracts, loan applications, servicing cases, "
+                    + "personal-loan agreements and supply-chain finance agreements across the "
+                    + "core lending and contract services. Empty sections are returned as empty "
+                    + "lists when the party has no rows in the underlying table."
+    )
+    @GetMapping("/{partyId}/financial-profile")
+    public Mono<ResponseEntity<CustomerFinancialProfileDTO>> getCustomerFinancialProfile(
+            @PathVariable("partyId") UUID partyId) {
+        return customerService.getFinancialProfile(partyId)
                 .map(ResponseEntity::ok);
     }
 

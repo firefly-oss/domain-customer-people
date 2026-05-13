@@ -4,6 +4,8 @@ import org.fireflyframework.cqrs.query.QueryBus;
 import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
+import com.firefly.domain.people.core.customer.dto.CustomerFinancialProfileDTO;
+import com.firefly.domain.people.core.customer.queries.CustomerFinancialProfileQuery;
 import com.firefly.domain.people.core.customer.queries.NaturalPersonQuery;
 import com.firefly.domain.people.core.customer.services.CustomerService;
 import com.firefly.domain.people.core.customer.workflows.RegisterCustomerSaga;
@@ -75,6 +77,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Mono<NaturalPersonDTO> getCustomerInfo(UUID customerId) {
         return queryBus.query(NaturalPersonQuery.builder().partyId(customerId).build());
+    }
+
+    @Override
+    public Mono<CustomerFinancialProfileDTO> getFinancialProfile(UUID partyId) {
+        return queryBus.query(CustomerFinancialProfileQuery.builder().partyId(partyId).build());
     }
 
     // Translate a failed saga result into a reactive error so HTTP callers see a real

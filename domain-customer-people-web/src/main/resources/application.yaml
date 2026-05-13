@@ -50,6 +50,16 @@ api-configuration:
     base-path: ${ENDPOINT_CORE_CUSTOMER_MGMT:http://localhost:8082}
   common-platform.reference-master-data:
     base-path: ${ENDPOINT_CORE_REFERENCE_MASTER_DATA:http://localhost:8083}
+  common-platform.contract-mgmt:
+    base-path: ${ENDPOINT_CORE_CONTRACT_MGMT:http://localhost:8084}
+  core-lending.loan-origination:
+    base-path: ${ENDPOINT_CORE_LENDING_LOAN_ORIGINATION:http://localhost:8085}
+  core-lending.loan-servicing:
+    base-path: ${ENDPOINT_CORE_LENDING_LOAN_SERVICING:http://localhost:8086}
+  core-lending.personal-loans:
+    base-path: ${ENDPOINT_CORE_LENDING_PERSONAL_LOANS:http://localhost:8087}
+  core-lending.asset-finance:
+    base-path: ${ENDPOINT_CORE_LENDING_ASSET_FINANCE:http://localhost:8088}
 
 springdoc:
   api-docs:

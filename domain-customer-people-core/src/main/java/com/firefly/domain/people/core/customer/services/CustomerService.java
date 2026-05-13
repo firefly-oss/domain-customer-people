@@ -3,6 +3,7 @@ package com.firefly.domain.people.core.customer.services;
 import com.firefly.core.customer.sdk.model.NaturalPersonDTO;
 import com.firefly.domain.people.core.customer.commands.RegisterCustomerCommand;
 import com.firefly.domain.people.core.customer.commands.UpdateCustomerCommand;
+import com.firefly.domain.people.core.customer.dto.CustomerFinancialProfileDTO;
 import org.fireflyframework.orchestration.saga.engine.SagaResult;
 import reactor.core.publisher.Mono;
 
@@ -34,4 +35,14 @@ public interface CustomerService {
      * @return a Mono containing the customer's information as a NaturalPersonDTO, or an empty Mono if no customer is found
      */
     Mono<NaturalPersonDTO> getCustomerInfo(UUID customerId);
+
+    /**
+     * Returns the aggregated cross-core financial profile for a party — contracts,
+     * loan applications, servicing cases, personal-loan agreements and supply-chain
+     * finance agreements. Empty sections are returned as empty lists, not errors.
+     *
+     * @param partyId the party identifier
+     * @return the populated financial profile
+     */
+    Mono<CustomerFinancialProfileDTO> getFinancialProfile(UUID partyId);
 }
